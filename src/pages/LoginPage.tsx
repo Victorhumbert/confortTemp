@@ -4,7 +4,6 @@ import {Input} from "@/components/ui/input.tsx";
 import {Button} from "@/components/ui/button.tsx";
 import {Lock, User} from "lucide-react";
 import {useNavigate} from "react-router-dom";
-import {Header} from "@/components/Header.tsx";
 
 export const LoginPage = () => {
     const navigation = useNavigate();
