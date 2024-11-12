@@ -71,7 +71,7 @@ export const DashBoard = () => {
                                         <div className='flex gap-1 items-center'>
                                             <FormControl>
                                                 <Slider defaultValue={[22]} max={60} step={1}
-                                                    {...FormTemp.register('temperatura')}
+                                                     //{...FormTemp.register('temperatura')}
                                                 />
                                             </FormControl>
                                             <span className='p-1 px-3 bg-muted rounded-md'>{FormTemp.getValues('temperatura')
@@ -89,7 +89,7 @@ export const DashBoard = () => {
                                         <div className='flex gap-1 items-center'>
                                             <FormControl>
                                                 <Slider defaultValue={[22]} max={100} step={1}
-                                                        {...FormTemp.register('umidade')}
+                                                       // {...FormTemp.register('umidade')}
                                                 />
                                             </FormControl>
                                             <span
