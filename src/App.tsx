@@ -1,6 +1,6 @@
 import {Routes, Route, BrowserRouter} from "react-router-dom";
-import {LoginPage} from "@/pages/LoginPage.tsx";
-import {DashBoard} from "@/pages/DashBoard.tsx";
+import {LoginPage} from "@/pages/LoginPage";
+import {DashBoard} from "@/pages/DashBoard";
 
 export default function App() {
 
