@@ -1,14 +1,13 @@
 import {Form, FormControl, FormField, FormItem, FormLabel} from "@/components/ui/form.tsx";
-import {Input} from "@/components/ui/input.tsx";
 import {Button} from "@/components/ui/button.tsx";
 import {useForm} from "react-hook-form";
 import {enviarDados} from "@/api.tsx";
 import {useLocation} from "react-router-dom";
 import {Header} from "@/components/Header.tsx";
 import {
-    Drawer, DrawerClose,
+    Drawer,
     DrawerContent,
-    DrawerDescription, DrawerFooter,
+    DrawerDescription,
     DrawerHeader,
     DrawerTitle,
     DrawerTrigger
@@ -27,12 +26,12 @@ export const DashBoard = () => {
         alert("Geolocalização não é suportada pelo seu navegador.");
     }
 
-    function success(position) {
+    function success(position: any) {
         const latitude = position.coords.latitude;
         const longitude = position.coords.longitude;
         console.log("Latitude: " + latitude + ", Longitude: " + longitude);
         // Chamar a API de clima com as coordenadas obtidas
-        getWeather(latitude, longitude);
+        // getWeather(latitude, longitude);
     }
 
     function error() {
