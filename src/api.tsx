@@ -4,7 +4,7 @@ import * as process from "node:process";
 
 const URL_BASE = "http://192.168.3.47:3000"
 const CLIMA_API_KEY = import.meta.env.VITE_CLIMA_API_KEY;
-const teste = process.env.CLIMA_API_KEY;
+const teste = process.env["CLIMA_API_KEY"];
 console.log(teste);
 
 export async function enviarDados(dados: FormProps): Promise<void> {
