@@ -15,8 +15,6 @@ export const LoginPage = () => {
         })
     }
 
-    console.log("aaaaaaaaaaaaaaa")
-
     return (
         <>
             <div className='grid w-full h-screen justify-center content-center'>

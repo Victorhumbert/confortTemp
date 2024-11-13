@@ -1,4 +1,4 @@
-import {FormProps} from "@/interfaces.tsx";
+import {ClimaProps, FormProps} from "@/interfaces.tsx";
 
 
 const URL_BASE = "http://192.168.3.47:3000"
@@ -12,16 +12,11 @@ export async function enviarDados(dados: FormProps): Promise<void> {
         },
         body: JSON.stringify(dados),
     })
-    console.log(JSON.stringify(dados))
-    const data = await response.json()
-    return data
+    return await response.json()
 }
 
-export async function teste() {
+export async function climaAtual(lat: number, long: number): Promise<ClimaProps> {
     const response =
-        await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=44.34&lon=10.99&appid=${CLIMA_API_KEY}`)
-    const data = await response.json()
-    console.log(data)
+        await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${long}&lang=pt_br&appid=${CLIMA_API_KEY}`)
+    return await response.json()
 }
-
-teste()
