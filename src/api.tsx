@@ -6,6 +6,7 @@ const URL_BASE = "http://192.168.3.47:3000"
 const CLIMA_API_KEY = import.meta.env.VITE_CLIMA_API_KEY;
 console.log(CLIMA_API_KEY);
 console.log(process.env.VITE_CLIMA_API_KEY);
+console.log('opaaa')
 
 export async function enviarDados(dados: FormProps): Promise<void> {
     const response = await fetch(`${URL_BASE}/api/dados`, {
