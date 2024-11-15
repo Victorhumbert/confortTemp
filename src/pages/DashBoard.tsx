@@ -52,12 +52,12 @@ export const DashBoard = () => {
     return (
         <div className="w-screen h-screen">
             <Header />
-            <h1 className='text-2xl'>Seja bem vindo a Home, {location.state}</h1>
+            <h1 className='text-3xl text-center my-12 text-yellow-800'>Seja bem vindo, {location.state || 'Usuário'}</h1>
 
-            <div className='grid h-1/2 mt-auto p-2 justify-center content-center'>
-                <div className='bg-blue-500 p-2 rounded-md'>
-                    <span>{bairroName}</span>
-                    <h1>{temperatura}°C</h1>
+            <div className='grid justify-center'>
+                <div className='text-8xl text-center px-20 py-16 h-full grid rounded-full border'>
+                    <span className='text-2xl text-orange-300'>{bairroName || 'Procurando...'}</span>
+                    <h1 className='text-primary relative'>{temperatura} <span className='text-2xl absolute bottom-0'>°C</span></h1>
                 </div>
             </div>
 
@@ -77,10 +77,8 @@ export const DashBoard = () => {
                                     <FormItem>
                                         <FormLabel>Temperatura</FormLabel>
                                         <div className='flex gap-1 items-center'>
-                                            <FormControl>
-                                                <Slider defaultValue={[22]} max={60} step={1}
-                                                     //{...FormTemp.register('temperatura')}
-                                                />
+                                            <FormControl {...FormTemp.register('temperatura')}>
+                                                <Slider defaultValue={[22]} max={60} step={1}/>
                                             </FormControl>
                                             <span className='p-1 px-3 bg-muted rounded-md'>{FormTemp.getValues('temperatura')
                                                 ? FormTemp.getValues('temperatura') : 0}</span>
@@ -95,10 +93,8 @@ export const DashBoard = () => {
                                     <FormItem>
                                         <FormLabel>Umidade</FormLabel>
                                         <div className='flex gap-1 items-center'>
-                                            <FormControl>
-                                                <Slider defaultValue={[22]} max={100} step={1}
-                                                       //{...FormTemp.register('umidade')}
-                                                />
+                                            <FormControl {...FormTemp.register('umidade')}>
+                                                <Slider defaultValue={[22]} max={100} step={1}/>
                                             </FormControl>
                                             <span
                                                 className='p-1 px-3 bg-muted rounded-md'>{FormTemp.getValues('umidade')

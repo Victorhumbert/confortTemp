@@ -19,7 +19,7 @@ export const LoginPage = () => {
         <>
             <div className='grid w-full h-screen justify-center content-center'>
                 <div className='grid gap-3 p-10 border rounded-md'>
-                    <h1 className='font-semibold text-3xl text-center'>ConfortTemp</h1>
+                        <img src='logo_ConfotTemp.jpg' className='w-32 h-32 mx-auto' />
                     <Form {...loginForm}>
                         <form onSubmit={loginForm.handleSubmit(handleLogin)} className='grid gap-3'>
                             <FormField
@@ -30,7 +30,7 @@ export const LoginPage = () => {
 
                                         <FormLabel htmlFor='usuario'>Usuário</FormLabel>
                                         <div className='relative'>
-                                            <User className='absolute z-10 right-full top-1/2 -translate-y-1/2'/>
+                                            <User className='text-primary absolute z-10 right-full top-1/2 -translate-y-1/2'/>
                                             <FormControl>
                                                 <Input
                                                     id='usuario'
@@ -52,7 +52,7 @@ export const LoginPage = () => {
 
                                         <FormLabel htmlFor='senha'>Senha</FormLabel>
                                         <div className='relative'>
-                                            <Lock className='absolute z-10 right-full top-1/2 -translate-y-1/2'/>
+                                            <Lock className='text-primary absolute z-10 right-full top-1/2 -translate-y-1/2'/>
                                             <FormControl>
                                                 <Input
                                                     type='password'
@@ -67,7 +67,7 @@ export const LoginPage = () => {
                                     </FormItem>
                                 )}
                             />
-                            <Button type="submit" color="primary">Login</Button>
+                            <Button type="submit">Login</Button>
                         </form>
                     </Form>
                 </div>
