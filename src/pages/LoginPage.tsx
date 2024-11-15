@@ -4,6 +4,7 @@ import {Input} from "@/components/ui/input.tsx";
 import {Button} from "@/components/ui/button.tsx";
 import {Lock, User} from "lucide-react";
 import {useNavigate} from "react-router-dom";
+import logo from 'logo_ConfotTemp.jpg'
 
 export const LoginPage = () => {
     const navigation = useNavigate();
@@ -19,7 +20,7 @@ export const LoginPage = () => {
         <>
             <div className='grid w-full h-screen justify-center content-center'>
                 <div className='grid gap-3 p-10 border rounded-md'>
-                        <img src='logo_ConfotTemp.jpg' className='w-32 h-32 mx-auto' />
+                        <img src={logo} className='w-32 h-32 mx-auto' />
                     <Form {...loginForm}>
                         <form onSubmit={loginForm.handleSubmit(handleLogin)} className='grid gap-3'>
                             <FormField
