@@ -1,4 +1,3 @@
-import {Button} from "@/components/ui/button.tsx";
 import {LogOut, Settings} from "lucide-react";
 import {useNavigate} from "react-router-dom";
 
