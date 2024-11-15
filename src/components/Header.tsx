@@ -1,6 +1,6 @@
 import {LogOut, Settings} from "lucide-react";
 import {useNavigate} from "react-router-dom";
-import logo from '/logo_ConfotTemp.jpg'
+import logo from '../../logo_ConfotTemp.jpg'
 
 
 export const Header = () => {
