@@ -1,7 +1,7 @@
 import {ClimaProps, FormProps} from "@/interfaces.tsx";
 
 
-const URL_BASE = "http://localhost:3000"
+const URL_BASE = "https://backend-i76nx1o7h-victorhumberts-projects.vercel.app/"
 const CLIMA_API_KEY = import.meta.env.VITE_CLIMA_API_KEY;
 
 export async function enviarDados(dados: FormProps): Promise<void> {
