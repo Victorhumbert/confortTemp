@@ -11,3 +11,11 @@ export interface ClimaProps {
 
     }
 }
+
+export interface DispositivoProps {
+    nome: string,
+    temperatura: number,
+    umidade: number,
+    movimento: boolean
+    ligado: boolean
+}

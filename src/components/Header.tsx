@@ -14,7 +14,7 @@ export const Header = () => {
                 <h1 className='text-2xl text-primary'>ConfortTemp</h1>
             </div>
             <div className='flex ml-auto items-center justify-self-end justify-end justify-items-end'>
-                <Settings onClick={() => navigate('/')}
+                <Settings onClick={() => navigate('/settings')}
                         className='justify-self-end w-10 h-10 p-2 cursor-pointer'/>
                 <LogOut onClick={() => navigate('/')}
                         className='justify-self-end w-10 h-10 p-2 cursor-pointer text-destructive' />

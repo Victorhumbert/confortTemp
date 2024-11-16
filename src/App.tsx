@@ -1,6 +1,8 @@
 import {Routes, Route, BrowserRouter} from "react-router-dom";
 import {LoginPage} from "./pages/LoginPage.tsx";
 import {DashBoard} from "./pages/DashBoard.tsx";
+import {SettingsPage} from "@/pages/SettingsPage.tsx";
+import {Toaster} from "sonner";
 
 export default function App() {
 
@@ -10,8 +12,10 @@ export default function App() {
               <Routes>
                   <Route path='/' element={<LoginPage/>}/>
                   <Route path='/dashboard' element={<DashBoard/>}/>
+                  <Route path='/settings' element={<SettingsPage />}/>
               </Routes>
           </BrowserRouter>
+          <Toaster position='top-right' />
       </>
   )
 }

@@ -1,53 +1,57 @@
-import {Form, FormControl, FormField, FormItem, FormLabel} from "@/components/ui/form.tsx";
-import {Button} from "@/components/ui/button.tsx";
-import {useForm} from "react-hook-form";
-import {climaAtual, enviarDados} from "@/api.tsx";
+import {climaAtual, GetDispositivos} from "@/api.tsx";
 import {useLocation} from "react-router-dom";
 import {Header} from "@/components/Header.tsx";
-import {
-    Drawer,
-    DrawerContent,
-    DrawerDescription,
-    DrawerHeader,
-    DrawerTitle,
-    DrawerTrigger
-} from "@/components/ui/drawer.tsx";
-import {Slider} from "@/components/ui/slider.tsx";
-import {useState} from "react";
+import {useEffect, useState} from "react";
+import {DispositivoProps} from "@/interfaces.tsx";
+import {MudarTemperatura} from "@/components/MudarTemperatura.tsx";
+import {HoverCard, HoverCardContent, HoverCardTrigger} from "@/components/ui/hover-card.tsx";
 
 
 
 export const DashBoard = () => {
-    const FormTemp = useForm()
+
     const location = useLocation();
     const [bairroName, setBairroName] = useState("");
     const [temperatura, setTemperatura] = useState(0);
+    const [dispositivos, setDispositivos] = useState<DispositivoProps[]>([]);
     const tempKelvin = 273.15
 
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(success, error);
-    } else {
-        alert("Geolocalização não é suportada pelo seu navegador.");
-    }
 
-    async function success(position: GeolocationPosition ) {
-        const latitude = position.coords.latitude;
-        const longitude = position.coords.longitude;
 
-        // Chamar a API de clima com as coordenadas obtidas
-        const response = await climaAtual(latitude, longitude)
-        setTemperatura(+(response.main.temp - tempKelvin).toFixed())
-        setBairroName(response.name)
-    }
+    useEffect(() => {
+        async function reponseDispositivos() {
+            const {dispositivos} = await GetDispositivos();
+            if (!dispositivos) return
+            setDispositivos(dispositivos);
+            return dispositivos;
+        }
+        reponseDispositivos()
+    }, [])
 
-    function error() {
-        alert("Não foi possível obter a localização.");
-    }
+    useEffect(() => {
 
-    async function onSubmit() {
-        const { temperatura, umidade } = FormTemp.getValues()
-        await enviarDados({temperatura, umidade})
-    }
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(success, error);
+        } else {
+            alert("Geolocalização não é suportada pelo seu navegador.");
+        }
+        async function success(position: GeolocationPosition) {
+            const latitude = position.coords.latitude;
+            const longitude = position.coords.longitude;
+
+            // Chamar a API de clima com as coordenadas obtidas
+            const response = await climaAtual(latitude, longitude)
+            if (!response) return;
+            setTemperatura(+(response.main.temp - tempKelvin).toFixed())
+            setBairroName(response.name)
+        }
+
+        function error() {
+            alert("Não foi possível obter a localização.");
+        }
+    }, [])
+
+
 
     return (
         <div className="w-screen h-screen">
@@ -60,54 +64,43 @@ export const DashBoard = () => {
                     <h1 className='text-primary relative'>{temperatura} <span className='text-2xl absolute bottom-0'>°C</span></h1>
                 </div>
             </div>
+            <MudarTemperatura />
+            <div className='grid justify-center m-4'>
+                <h2 className='text-4xl text-primary opacity-30'>Dispositivos</h2>
+                <div className='grid grid-cols-5 gap-2 px-4 text-center text-xs sm:text-lg'>
+                    <p>Nome</p>
+                    <p>Temperatura</p>
+                    <p>Umidade</p>
+                    <p>Luzes</p>
+                    <p>Status</p>
+                </div>
+                <ul className='grid border rounded-md divide-y'>
+                        {dispositivos.map((dispositivo) => (
+                            <li key={dispositivo.nome} className='grid grid-cols-5 gap-2 p-4'>
+                                <h1>{dispositivo.nome}</h1>
+                                <p className='text-center'>{dispositivo.temperatura}°C</p>
+                                <p className='text-center'>{dispositivo.umidade}%</p>
+                                <HoverCard>
+                                    <HoverCardTrigger
+                                        className={`px-3 justify-self-center rounded-full ${dispositivo.movimento ? 'bg-green-600' : 'bg-red-600'}`} >
+                                    </HoverCardTrigger>
+                                    <HoverCardContent className='py-2 px-4 text-center w-max'>
+                                        <span>{dispositivo.movimento ? 'Luzes acesas' : 'Luzes apagadas'}</span>
+                                    </HoverCardContent>
+                                </HoverCard>
+                                <HoverCard>
+                                    <HoverCardTrigger
+                                        className={`px-3 justify-self-center rounded-full ${dispositivo.ligado ? 'bg-green-600' : 'bg-red-600'}`}>
+                                    </HoverCardTrigger>
+                                    <HoverCardContent className='py-2 px-4 text-center w-max'>
+                                        <span>{dispositivo.ligado ? 'Conectado' : 'Desconectado'}</span>
+                                    </HoverCardContent>
+                                </HoverCard>
 
-            <Drawer fadeFromIndex={0} snapPoints={[1]}>
-                <DrawerTrigger className='p-2 bg-primary text-primary-foreground rounded-md hover:bg-gray-700 duration-150'>Mudar climatização</DrawerTrigger>
-                <DrawerContent className='mb-10'>
-                    <DrawerHeader>
-                        <DrawerTitle>Qual temperatura e umidade desejas?</DrawerTitle>
-                        <DrawerDescription>Selecione a temperatura ideal para o ambiente.</DrawerDescription>
-                    </DrawerHeader>
-                    <Form {...FormTemp}>
-                        <form className="w-1/2 mx-auto grid gap-2" onSubmit={FormTemp.handleSubmit(onSubmit)}>
-                            <FormField
-                                control={FormTemp.control}
-                                name="temperatura"
-                                render={() => (
-                                    <FormItem>
-                                        <FormLabel>Temperatura</FormLabel>
-                                        <div className='flex gap-1 items-center'>
-                                            <FormControl {...FormTemp.register('temperatura')}>
-                                                <Slider defaultValue={[22]} max={60} step={1}/>
-                                            </FormControl>
-                                            <span className='p-1 px-3 bg-muted rounded-md'>{FormTemp.getValues('temperatura')
-                                                ? FormTemp.getValues('temperatura') : 0}</span>
-                                        </div>
-                                    </FormItem>
-                                )}
-                            />
-                            <FormField
-                                control={FormTemp.control}
-                                name="umidade"
-                                render={() => (
-                                    <FormItem>
-                                        <FormLabel>Umidade</FormLabel>
-                                        <div className='flex gap-1 items-center'>
-                                            <FormControl {...FormTemp.register('umidade')}>
-                                                <Slider defaultValue={[22]} max={100} step={1}/>
-                                            </FormControl>
-                                            <span
-                                                className='p-1 px-3 bg-muted rounded-md'>{FormTemp.getValues('umidade')
-                                                ? FormTemp.getValues('umidade') : 0}</span>
-                                        </div>
-                                    </FormItem>
-                                )}
-                            />
-                            <Button type="submit" color="primary">Enviar dados</Button>
-                        </form>
-                    </Form>
-                </DrawerContent>
-            </Drawer>
+                            </li>
+                        ))}
+                </ul>
+            </div>
 
         </div>
 
