@@ -4,9 +4,7 @@ import Logo from '@/assets/logo_ComFortTemp.svg?react'
 
 
 export const Header = () => {
-
     const navigate = useNavigate();
-
     return (
         <div className="border-b border-x p-2 flex w-full gap-2">
             <div className='flex items-center gap-1 cursor-pointer' onClick={() => navigate('/dashboard/')} >
