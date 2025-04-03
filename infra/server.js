@@ -1,6 +1,6 @@
-const express = require('express');
-const cors = require('cors');
-const { PrismaClient } = require('@prisma/client');
+import express from 'express';
+import cors from 'cors';
+import { PrismaClient } from '../prisma/app/generated/prisma/client/index.js';
 
 const app = express();
 const prisma = new PrismaClient();
@@ -16,7 +16,6 @@ app.use(express.urlencoded({extended: true}));
 app.get('/', (req, res) => {
     res.send('Servidor rodando!');
 });
-const { PrismaClient } = require('@prisma/client');
 
 app.post('/login', async (req, res) => {
     const { email, password } = req.body;
@@ -83,6 +82,18 @@ app.post('/dispositivos', async (req, res) => {
 // Listar dispositivos
 app.get('/dispositivos', async (req, res) => {
     const dispositivos = await prisma.dispositivo.findMany({
+        include: { user: true, config: true, historico: true }
+    });
+    res.json(dispositivos);
+});
+app.get('/user/:id/dispositivos', async (req, res) => {
+    const {id} = req.params
+    console.log(id);
+    const dispositivos = await prisma.dispositivo.findMany(
+        {
+            where: {
+                userId : +id
+            },
         include: { user: true, config: true, historico: true }
     });
     res.json(dispositivos);
