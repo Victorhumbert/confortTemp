@@ -4,7 +4,7 @@ import { PrismaClient } from "../prisma/app/generated/prisma/client/index.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import fetch from "node-fetch";
-// import dotenv from "dotenv";
+import dotenv from "dotenv";
 
 // Carrega as variáveis de ambiente do arquivo .env
 // dotenv.config({ path: ".env.local" }); // Carrega as variáveis de ambiente do arquivo .env
