@@ -3,15 +3,18 @@ import cors from "cors";
 import { PrismaClient } from "../prisma/app/generated/prisma/client/index.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
-import dotenv from "dotenv";
+import fetch from "node-fetch";
+// import dotenv from "dotenv";
 
 // Carrega as variáveis de ambiente do arquivo .env
 // dotenv.config({ path: ".env.local" }); // Carrega as variáveis de ambiente do arquivo .env
+dotenv.config();
 
 const JWT_SECRET = process.env.JWT_SECRET;
 
 const app = express();
 const prisma = new PrismaClient();
+const PORT = process.env.PORT || 3000;
 
 // Middleware para liberar CORS para todas as origens
 app.use(cors());
@@ -19,6 +22,11 @@ app.use(cors());
 // Middleware para interpretar JSON e URL-encoded
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// Inicializa o servidor local
+app.listen(PORT, () => {
+  console.log(`Servidor rodando na porta ${PORT}`);
+});
 
 // Rotas
 app.get("/", (req, res) => {
@@ -249,8 +257,3 @@ app.get("/api/clima/:lat/:long", async (req, res) => {
   }
 });
 
-// Inicializa o servidor local
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Servidor rodando na porta ${PORT}`);
-});
