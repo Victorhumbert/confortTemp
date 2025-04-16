@@ -6,7 +6,7 @@ import bcrypt from "bcrypt";
 import dotenv from "dotenv";
 
 // Carrega as variáveis de ambiente do arquivo .env
-dotenv.config({ path: ".env.local" }); // Carrega as variáveis de ambiente do arquivo .env
+// dotenv.config({ path: ".env.local" }); // Carrega as variáveis de ambiente do arquivo .env
 
 const JWT_SECRET = process.env.JWT_SECRET;
 
@@ -250,7 +250,7 @@ app.get("/api/clima/:lat/:long", async (req, res) => {
 });
 
 // Inicializa o servidor local
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Servidor rodando na porta ${PORT}`);
 });
