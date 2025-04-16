@@ -1,4 +1,4 @@
-// src/pages/SettingsPage.tsx
+// src/pages/SettingsPage
 
 import { Header } from "@/components/Header";
 import {

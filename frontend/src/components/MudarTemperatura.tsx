@@ -5,18 +5,18 @@ import {
     DrawerHeader,
     DrawerTitle,
     DrawerTrigger
-} from "@/components/ui/drawer.tsx";
-import {Form, FormControl, FormField, FormItem, FormLabel} from "@/components/ui/form.tsx";
+} from "@/components/ui/drawer";
+import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form";
 import {useForm} from "react-hook-form";
-import {enviarDados} from "@/api.tsx";
-import {Slider} from "@/components/ui/slider.tsx";
-import {Button} from "@/components/ui/button.tsx";
+import { enviarDados } from "@/api";
+import { Slider } from "@/components/ui/slider";
+import { Button } from "@/components/ui/button";
 import {useMediaQuery} from "react-responsive";
 import {
     Dialog,
     DialogContent, DialogDescription, DialogHeader, DialogTitle,
     DialogTrigger
-} from "@/components/ui/dialog.tsx";
+} from "@/components/ui/dialog";
 import {toast} from "sonner";
 
 

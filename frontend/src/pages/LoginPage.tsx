@@ -4,17 +4,17 @@ import {
   FormField,
   FormItem,
   FormLabel,
-} from "@/components/ui/form.tsx";
+} from "@/components/ui/form";
 import { useForm } from "react-hook-form";
-import { Input } from "@/components/ui/input.tsx";
-import { Button } from "@/components/ui/button.tsx";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import { Lock, User } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import Banner from "@/assets/banner2.webp";
 import Logo from "@/assets/logo_ComFortTemp.svg?react";
 import { login } from "@/api";
 import { toast } from "sonner";
-import { LoginProps, ResponseLogin } from "@/interfaces.tsx";
+import { LoginProps, ResponseLogin } from "@/interfaces";
 
 export const LoginPage = () => {
   const navigation = useNavigate();

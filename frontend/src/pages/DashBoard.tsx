@@ -1,13 +1,13 @@
-import { climaAtual, GetDispositivos } from "@/api.tsx";
-import { Header } from "@/components/Header.tsx";
+import { climaAtual, GetDispositivos } from "@/api";
+import { Header } from "@/components/Header";
 import { useEffect, useState } from "react";
-import { DispositivoProps, IUser } from "@/interfaces.tsx";
-import { MudarTemperatura } from "@/components/MudarTemperatura.tsx";
+import { DispositivoProps, IUser } from "@/interfaces";
+import { MudarTemperatura } from "@/components/MudarTemperatura";
 // import {
 //   HoverCard,
 //   HoverCardContent,
 //   HoverCardTrigger,
-// } from "@/components/ui/hover-card.tsx";
+// } from "@/components/ui/hover-card";
 import {
   Table,
   TableBody,

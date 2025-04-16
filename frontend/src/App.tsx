@@ -1,9 +1,9 @@
 import {Routes, Route, BrowserRouter} from "react-router-dom";
-import {LoginPage} from "./pages/LoginPage.tsx";
-import {DashBoard} from "./pages/DashBoard.tsx";
-import {SettingsPage} from "@/pages/SettingsPage.tsx";
+import { LoginPage } from "@/pages/LoginPage";
+import { DashBoard } from "@/pages/DashBoard";
+import { SettingsPage } from "@/pages/SettingsPage";
 import {Toaster} from "sonner";
-import { ThemeProvider } from "./components/ThemeProvider.tsx";
+import { ThemeProvider } from "@/components/ThemeProvider";
 
 export default function App() {
 	return (

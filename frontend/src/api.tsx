@@ -1,4 +1,4 @@
-import { ClimaProps, FormProps, ResponseLogin } from "@/interfaces.tsx";
+import { ClimaProps, FormProps, ResponseLogin } from "@/interfaces";
 import { toast } from "sonner";
 
 const URL_BASE = "http://localhost:3000";
