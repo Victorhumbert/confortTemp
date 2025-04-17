@@ -185,12 +185,20 @@ app.get("/api/dispositivos/:id", async (req, res) => {
 
 // Atualizar dispositivo
 app.put("/api/dispositivos/:id", async (req, res) => {
-  const { nome } = req.body;
+  const { temperatura } = req.body;
+  const id = req.params.id;
   try {
-    const dispositivo = await prisma.dispositivo.update({
-      where: { id: Number(req.params.id) },
-      data: { nome },
+    const dispositivo = await prisma.config.update({
+      where: {
+        dispositivosId: Number(id),
+      },
+      data: {
+        temperatura: temperatura,
+      },
     });
+    console.log("DISPOSITIVO", dispositivo);
+    console.log("TEMP", temperatura);
+    console.log("DADOS ATUALIZADOS");
     res.json(dispositivo);
   } catch (error) {
     res.status(400).json({ error: "Erro ao atualizar dispositivo" });
@@ -256,4 +264,3 @@ app.get("/api/clima/:lat/:long", async (req, res) => {
     res.status(500).json({ error: "Erro ao buscar clima" });
   }
 });
-
