@@ -194,12 +194,15 @@ app.put("/api/dispositivos/:id", async (req, res) => {
       },
       data: {
         temperatura: temperatura,
+        updatedAt: new Date(),
       },
     });
     console.log("DISPOSITIVO", dispositivo);
     console.log("TEMP", temperatura);
     console.log("DADOS ATUALIZADOS");
-    res.json(dispositivo);
+    res
+      .status(200)
+      .json({ data: dispositivo, message: "Dados atualizados com sucesso!" });
   } catch (error) {
     res.status(400).json({ error: "Erro ao atualizar dispositivo" });
   }
