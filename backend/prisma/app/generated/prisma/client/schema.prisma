@@ -11,7 +11,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url      = "postgresql://production-postgres_owner:XI85gsuilSPK@ep-patient-dawn-a4ydu3un-pooler.us-east-1.aws.neon.tech/production-postgres?sslmode=require"
 }
 
 model User {
@@ -34,7 +34,7 @@ model Dispositivo {
 }
 
 model Config {
-  id              Int          @id @default(autoincrement())
+  id              Int          @id @unique @default(autoincrement())
   temperatura     Int          @default(24)
   temperaturaMax  Int          @default(30)
   temperaturaMin  Int          @default(18)
@@ -45,12 +45,12 @@ model Config {
   motionMax       Int          @default(5)
   createdAt       DateTime     @default(now())
   updatedAt       DateTime?    @updatedAt
-  dispositivosId  Int
+  dispositivosId  Int          @unique
   dispositivos    Dispositivo? @relation(fields: [dispositivosId], references: [id])
 }
 
 model Historico {
-  id             Int              @id @default(autoincrement())
+  id             Int              @id @unique @default(autoincrement())
   Dispositivo    Dispositivo?     @relation(fields: [dispositivoId], references: [id])
   dispositivoId  Int?
   historico_temp Historico_temp[]
@@ -58,7 +58,7 @@ model Historico {
 }
 
 model Historico_temp {
-  id          Int        @id @default(autoincrement())
+  id          Int        @id @unique @default(autoincrement())
   temperatura Int        @default(24)
   updatedAt   DateTime   @default(now())
   Historico   Historico? @relation(fields: [historicoId], references: [id])
@@ -66,7 +66,7 @@ model Historico_temp {
 }
 
 model Historico_mov {
-  id          Int        @id @default(autoincrement())
+  id          Int        @id @unique @default(autoincrement())
   motion      Int
   updatedAt   DateTime   @default(now())
   Historico   Historico? @relation(fields: [historicoId], references: [id])

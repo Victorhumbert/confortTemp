@@ -8602,6 +8602,7 @@ export namespace Prisma {
 
   export type ConfigWhereUniqueInput = Prisma.AtLeast<{
     id?: number
+    dispositivosId?: number
     AND?: ConfigWhereInput | ConfigWhereInput[]
     OR?: ConfigWhereInput[]
     NOT?: ConfigWhereInput | ConfigWhereInput[]
@@ -8615,9 +8616,8 @@ export namespace Prisma {
     motionMax?: IntFilter<"Config"> | number
     createdAt?: DateTimeFilter<"Config"> | Date | string
     updatedAt?: DateTimeNullableFilter<"Config"> | Date | string | null
-    dispositivosId?: IntFilter<"Config"> | number
     dispositivos?: XOR<DispositivoNullableScalarRelationFilter, DispositivoWhereInput> | null
-  }, "id">
+  }, "id" | "id" | "dispositivosId">
 
   export type ConfigOrderByWithAggregationInput = {
     id?: SortOrder
@@ -8685,7 +8685,7 @@ export namespace Prisma {
     Dispositivo?: XOR<DispositivoNullableScalarRelationFilter, DispositivoWhereInput> | null
     historico_temp?: Historico_tempListRelationFilter
     historico_mov?: Historico_movListRelationFilter
-  }, "id">
+  }, "id" | "id">
 
   export type HistoricoOrderByWithAggregationInput = {
     id?: SortOrder
@@ -8733,7 +8733,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Historico_temp"> | Date | string
     historicoId?: IntNullableFilter<"Historico_temp"> | number | null
     Historico?: XOR<HistoricoNullableScalarRelationFilter, HistoricoWhereInput> | null
-  }, "id">
+  }, "id" | "id">
 
   export type Historico_tempOrderByWithAggregationInput = {
     id?: SortOrder
@@ -8785,7 +8785,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Historico_mov"> | Date | string
     historicoId?: IntNullableFilter<"Historico_mov"> | number | null
     Historico?: XOR<HistoricoNullableScalarRelationFilter, HistoricoWhereInput> | null
-  }, "id">
+  }, "id" | "id">
 
   export type Historico_movOrderByWithAggregationInput = {
     id?: SortOrder

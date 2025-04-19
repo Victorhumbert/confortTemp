@@ -186,11 +186,11 @@ app.get("/api/dispositivos/:id", async (req, res) => {
 // Atualizar dispositivo
 app.put("/api/dispositivos/:id", async (req, res) => {
   const { temperatura } = req.body;
-  const id = req.params.id;
+  const id = Number(req.params.id);
   try {
     const dispositivo = await prisma.config.update({
       where: {
-        dispositivosId: Number(id),
+        dispositivosId: id,
       },
       data: {
         temperatura: temperatura,
@@ -204,7 +204,7 @@ app.put("/api/dispositivos/:id", async (req, res) => {
       .status(200)
       .json({ data: dispositivo, message: "Dados atualizados com sucesso!" });
   } catch (error) {
-    res.status(400).json({ error: "Erro ao atualizar dispositivo" });
+    res.status(400).json({ error: `Erro ao atualizar dispositivo: ${error}` });
   }
 });
 
