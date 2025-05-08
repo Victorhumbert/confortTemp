@@ -1,7 +1,8 @@
 import { ClimaProps, FormProps, ResponseLogin } from "@/interfaces";
 import { toast } from "sonner";
 
-const URL_BASE = "http://localhost:3000";
+const URL_BASE = "http://localhost:3000"; // Local
+// const URL_BASE = "https://conforttemp-backend.onrender.com"; // Prod
 
 export async function login(email: string, senha: string): Promise<ResponseLogin> {
   try {

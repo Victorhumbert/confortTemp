@@ -10,7 +10,11 @@ import dotenv from "dotenv";
 // dotenv.config({ path: ".env.local" }); // Carrega as variáveis de ambiente do arquivo .env
 dotenv.config();
 
-const JWT_SECRET = process.env.JWT_SECRET;
+const JWT_SECRET =
+  process.env.JWT_SECRET ||
+  "2222612d8074b4a21b828be70e621a6a32a339c37114e41dd3044f352d37107d"; // Chave secreta para o JWT
+const CLIMA_API_KEY =
+  process.env.CLIMA_API_KEY || "496aebbe7bf9a2ddfc3b6d113ffa318e"; // Chave de API do OpenWeatherMap
 
 const app = express();
 const prisma = new PrismaClient();
@@ -260,7 +264,7 @@ app.get("/api/clima/:lat/:long", async (req, res) => {
   const { lat, long } = req.params;
   try {
     const response = await fetch(
-      `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${long}&lang=pt_br&appid=${process.env.CLIMA_API_KEY}`
+      `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${long}&lang=pt_br&appid=${CLIMA_API_KEY}`
     );
     res.status(200).json(await response.json());
   } catch (error) {
