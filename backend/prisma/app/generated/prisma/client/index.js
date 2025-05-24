@@ -174,7 +174,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "C:\\Users\\VictorHumberto\\Documents\\GitHub\\confortTemp\\backend\\prisma\\app\\generated\\prisma\\client",
+      "value": "/home/victor/desenvolvimento/confortTemp/confortTemp/backend/prisma/app/generated/prisma/client",
       "fromEnvVar": null
     },
     "config": {
@@ -183,16 +183,17 @@ const config = {
     "binaryTargets": [
       {
         "fromEnvVar": null,
-        "value": "windows",
+        "value": "debian-openssl-3.0.x",
         "native": true
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "C:\\Users\\VictorHumberto\\Documents\\GitHub\\confortTemp\\backend\\prisma\\schema.prisma",
+    "sourceFilePath": "/home/victor/desenvolvimento/confortTemp/confortTemp/backend/prisma/schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
-    "rootEnvPath": null
+    "rootEnvPath": null,
+    "schemaEnvPath": "../../../../../.env"
   },
   "relativePath": "../../../..",
   "clientVersion": "6.6.0",
@@ -201,16 +202,17 @@ const config = {
     "db"
   ],
   "activeProvider": "postgresql",
+  "postinstall": false,
   "inlineDatasources": {
     "db": {
       "url": {
-        "fromEnvVar": null,
-        "value": "postgresql://production-postgres_owner:XI85gsuilSPK@ep-patient-dawn-a4ydu3un-pooler.us-east-1.aws.neon.tech/production-postgres?sslmode=require"
+        "fromEnvVar": "DATABASE_URL",
+        "value": null
       }
     }
   },
-  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?\n// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init\n\ngenerator client {\n  provider = \"prisma-client-js\"\n  output   = \"app/generated/prisma/client\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = \"postgresql://production-postgres_owner:XI85gsuilSPK@ep-patient-dawn-a4ydu3un-pooler.us-east-1.aws.neon.tech/production-postgres?sslmode=require\"\n}\n\nmodel User {\n  id           Int           @id @unique @default(autoincrement())\n  username     String?       @unique\n  email        String\n  senha        String\n  createdAt    DateTime      @default(now())\n  UpdatedAt    DateTime      @updatedAt\n  dispositivos Dispositivo[]\n}\n\nmodel Dispositivo {\n  id        Int         @id @unique @default(autoincrement())\n  nome      String\n  userId    Int\n  user      User?       @relation(fields: [userId], references: [id])\n  config    Config[]\n  historico Historico[]\n}\n\nmodel Config {\n  id              Int          @id @unique @default(autoincrement())\n  temperatura     Int          @default(24)\n  temperaturaMax  Int          @default(30)\n  temperaturaMin  Int          @default(18)\n  umidade         Int          @default(50)\n  sensor          Boolean      @default(true)\n  distanciaSensor Int          @default(15)\n  ligado          Boolean      @default(false)\n  motionMax       Int          @default(5)\n  createdAt       DateTime     @default(now())\n  updatedAt       DateTime?    @updatedAt\n  dispositivosId  Int          @unique\n  dispositivos    Dispositivo? @relation(fields: [dispositivosId], references: [id])\n}\n\nmodel Historico {\n  id             Int              @id @unique @default(autoincrement())\n  Dispositivo    Dispositivo?     @relation(fields: [dispositivoId], references: [id])\n  dispositivoId  Int?\n  historico_temp Historico_temp[]\n  historico_mov  Historico_mov[]\n}\n\nmodel Historico_temp {\n  id          Int        @id @unique @default(autoincrement())\n  temperatura Int        @default(24)\n  updatedAt   DateTime   @default(now())\n  Historico   Historico? @relation(fields: [historicoId], references: [id])\n  historicoId Int?\n}\n\nmodel Historico_mov {\n  id          Int        @id @unique @default(autoincrement())\n  motion      Int\n  updatedAt   DateTime   @default(now())\n  Historico   Historico? @relation(fields: [historicoId], references: [id])\n  historicoId Int?\n}\n",
-  "inlineSchemaHash": "779d8365e38dd73c803069d057251b5848647c7701b6ef1d450ded3198f12cfd",
+  "inlineSchema": "// This is your Prisma schema file,\n// learn more about it in the docs: https://pris.ly/d/prisma-schema\n\n// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?\n// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init\n\ngenerator client {\n  provider = \"prisma-client-js\"\n  output   = \"app/generated/prisma/client\"\n}\n\ndatasource db {\n  provider = \"postgresql\"\n  url      = env(\"DATABASE_URL\")\n}\n\nmodel User {\n  id           Int           @id @unique @default(autoincrement())\n  username     String?       @unique\n  email        String\n  senha        String\n  createdAt    DateTime      @default(now())\n  UpdatedAt    DateTime      @updatedAt\n  dispositivos Dispositivo[]\n}\n\nmodel Dispositivo {\n  id        Int         @id @unique @default(autoincrement())\n  nome      String\n  userId    Int\n  user      User?       @relation(fields: [userId], references: [id])\n  config    Config[]\n  historico Historico[]\n}\n\nmodel Config {\n  id              Int          @id @unique @default(autoincrement())\n  temperatura     Int          @default(24)\n  temperaturaMax  Int          @default(30)\n  temperaturaMin  Int          @default(18)\n  umidade         Int          @default(50)\n  sensor          Boolean      @default(true)\n  distanciaSensor Int          @default(15)\n  ligado          Boolean      @default(false)\n  motionMax       Int          @default(5)\n  createdAt       DateTime     @default(now())\n  updatedAt       DateTime?    @updatedAt\n  dispositivosId  Int          @unique\n  dispositivos    Dispositivo? @relation(fields: [dispositivosId], references: [id])\n}\n\nmodel Historico {\n  id             Int              @id @unique @default(autoincrement())\n  Dispositivo    Dispositivo?     @relation(fields: [dispositivoId], references: [id])\n  dispositivoId  Int?\n  historico_temp Historico_temp[]\n  historico_mov  Historico_mov[]\n}\n\nmodel Historico_temp {\n  id          Int        @id @unique @default(autoincrement())\n  temperatura Int        @default(24)\n  updatedAt   DateTime   @default(now())\n  Historico   Historico? @relation(fields: [historicoId], references: [id])\n  historicoId Int?\n}\n\nmodel Historico_mov {\n  id          Int        @id @unique @default(autoincrement())\n  motion      Int\n  updatedAt   DateTime   @default(now())\n  Historico   Historico? @relation(fields: [historicoId], references: [id])\n  historicoId Int?\n}\n",
+  "inlineSchemaHash": "934b83f03884863ec5ccecc5c7435dd95099f5793f330f86276043c71cf4146d",
   "copyEngine": true
 }
 
@@ -249,8 +251,8 @@ exports.PrismaClient = PrismaClient
 Object.assign(exports, Prisma)
 
 // file annotations for bundling tools to include these files
-path.join(__dirname, "query_engine-windows.dll.node");
-path.join(process.cwd(), "prisma/app/generated/prisma/client/query_engine-windows.dll.node")
+path.join(__dirname, "libquery_engine-debian-openssl-3.0.x.so.node");
+path.join(process.cwd(), "prisma/app/generated/prisma/client/libquery_engine-debian-openssl-3.0.x.so.node")
 // file annotations for bundling tools to include these files
 path.join(__dirname, "schema.prisma");
 path.join(process.cwd(), "prisma/app/generated/prisma/client/schema.prisma")

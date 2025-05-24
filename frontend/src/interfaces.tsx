@@ -56,3 +56,8 @@ export interface DispositivoProps {
     dispositivoId: number;
   };
 }
+
+export interface IRequestCreateDispositivo {
+  userId: number;
+  nome: string;
+}

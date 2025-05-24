@@ -12,7 +12,8 @@
     "paths": {
       "@/*": ["*"]
     },
-    "types": ["vite/client", "node"]
+    "types": ["vite/client", "node"],
+    "lib": ["DOM", "ESNext"],
   },
   "include": ["src"]
 }

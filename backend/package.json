@@ -4,9 +4,9 @@
   "version": "1.1.0",
   "type": "module",
   "scripts": {
-    "dev": "node infra/server.js",
-    "start": "node infra/server.js",
-    "postinstall": "prisma generate"
+    "dev": "nodemon",
+    "build": "tsc",
+    "start": "node dist/infra/server.js"
   },
   "dependencies": {
     "@prisma/client": "^6.5.0",
@@ -20,9 +20,15 @@
     "prisma": "^6.5.0"
   },
   "devDependencies": {
+    "@eslint/js": "^9.24.0",
+    "@types/bcrypt": "^5.0.2",
+    "@types/cors": "^2.8.18",
+    "@types/express": "^5.0.2",
+    "@types/jsonwebtoken": "^9.0.9",
     "@types/node": "^22.9.0",
     "globals": "^16.0.0",
-    "typescript": "^5.5.3",
-    "@eslint/js": "^9.24.0"
+    "nodemon": "^3.1.10",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.5.3"
   }
 }

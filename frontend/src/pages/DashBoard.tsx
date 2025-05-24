@@ -1,7 +1,11 @@
-import { climaAtual, GetDispositivos } from "@/api";
+import { climaAtual, GetDispositivos, RequestCreateDispositivo } from "@/api";
 import { Header } from "@/components/Header";
 import { useEffect, useState } from "react";
-import { DispositivoProps, IUser } from "@/interfaces";
+import {
+  DispositivoProps,
+  IRequestCreateDispositivo,
+  IUser,
+} from "@/interfaces";
 import { MudarTemperatura } from "@/components/MudarTemperatura";
 import {
   Table,
@@ -19,7 +23,25 @@ import {
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
 import { Link, Navigate } from "react-router-dom";
-import { Settings } from "lucide-react";
+import { RefreshCcw, Settings } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { useForm } from "react-hook-form";
+import { Input } from "@/components/ui/input";
+import BluetoothScanner from "@/components/BluetoothScanner";
 
 export const DashBoard = () => {
   const [bairroName, setBairroName] = useState("");
@@ -33,16 +55,19 @@ export const DashBoard = () => {
   const username = userFormatado.username;
   const [temperatura, setTemperatura] = useState(0);
   const [dispositivos, setDispositivos] = useState<DispositivoProps[]>([]);
+  const [isModalCreateDipositivoOpen, setIsModalCreateDipositivoOpen] =
+    useState(false);
   const tempKelvin = 273.15;
+  const createDispositivoForm = useForm<DispositivoProps>();
 
+  async function requestDispositivos() {
+    const dispositivos = await GetDispositivos(Number(idUser));
+    if (!dispositivos) return;
+    setDispositivos(dispositivos);
+    return dispositivos;
+  }
   useEffect(() => {
-    async function responseDispositivos() {
-      const dispositivos = await GetDispositivos(Number(idUser));
-      if (!dispositivos) return;
-      setDispositivos(dispositivos);
-      return dispositivos;
-    }
-    responseDispositivos();
+    requestDispositivos();
   }, []);
 
   useEffect(() => {
@@ -68,50 +93,15 @@ export const DashBoard = () => {
     }
   }, []);
 
-  // const invoices = [
-  //   {
-  //     invoice: "INV001",
-  //     paymentStatus: "Paid",
-  //     totalAmount: "$250.00",
-  //     paymentMethod: "Credit Card",
-  //   },
-  //   {
-  //     invoice: "INV002",
-  //     paymentStatus: "Pending",
-  //     totalAmount: "$150.00",
-  //     paymentMethod: "PayPal",
-  //   },
-  //   {
-  //     invoice: "INV003",
-  //     paymentStatus: "Unpaid",
-  //     totalAmount: "$350.00",
-  //     paymentMethod: "Bank Transfer",
-  //   },
-  //   {
-  //     invoice: "INV004",
-  //     paymentStatus: "Paid",
-  //     totalAmount: "$450.00",
-  //     paymentMethod: "Credit Card",
-  //   },
-  //   {
-  //     invoice: "INV005",
-  //     paymentStatus: "Paid",
-  //     totalAmount: "$550.00",
-  //     paymentMethod: "PayPal",
-  //   },
-  //   {
-  //     invoice: "INV006",
-  //     paymentStatus: "Pending",
-  //     totalAmount: "$200.00",
-  //     paymentMethod: "Bank Transfer",
-  //   },
-  //   {
-  //     invoice: "INV007",
-  //     paymentStatus: "Unpaid",
-  //     totalAmount: "$300.00",
-  //     paymentMethod: "Credit Card",
-  //   },
-  // ];
+  async function createDispositivo(data: DispositivoProps) {
+    try {
+      await RequestCreateDispositivo({ nome: data.nome, userId: idUser });
+      setIsModalCreateDipositivoOpen(false);
+      requestDispositivos();
+    } catch (error) {
+      console.error("Erro ao criar dispositivo:", error);
+    }
+  }
 
   return (
     <div className="w-screen h-screen">
@@ -147,7 +137,10 @@ export const DashBoard = () => {
         <TableBody>
           {dispositivos && dispositivos.length > 0 ? (
             dispositivos.map((dispositivo) => (
-              <TableRow key={dispositivo.nome} className="text-center odd:bg-slate-100">
+              <TableRow
+                key={dispositivo.nome}
+                className="text-center odd:bg-slate-100"
+              >
                 <TableCell className="font-medium text-start">
                   {dispositivo.nome}
                 </TableCell>
@@ -172,28 +165,91 @@ export const DashBoard = () => {
                   </HoverCard>
                 </TableCell>
                 <TableCell>
-                  <div
-                    className={`grid mx-auto w-6 h-6 rounded-full bg-red-600 ${
-                      dispositivo.config[0].ligado ? "bg-success" : "bg-danger"
-                    }`}
-                  ></div>
+                  <HoverCard>
+                    <HoverCardTrigger>
+                      <div
+                        className={`grid mx-auto w-6 h-6 rounded-full ${
+                          dispositivo.config[0].ligado
+                            ? "bg-success"
+                            : "bg-danger"
+                        }`}
+                      ></div>
+                    </HoverCardTrigger>
+                    <HoverCardContent className="p-2">
+                      <div className="text-center">
+                        {dispositivo.config[0].ligado ? "Online" : "Offline"}
+                      </div>
+                    </HoverCardContent>
+                  </HoverCard>
                 </TableCell>
-                <TableCell>
-                  <Link to={`/dispositivo/${dispositivo.id}`} state={dispositivo} className="grid mx-auto w-max rounded-full p-2 hover:bg-slate-200">
+                <TableCell className="flex justify-center gap-2">
+                  <Link
+                    to={`/dispositivo/${dispositivo.id}`}
+                    state={dispositivo}
+                    className="grid mx-auto rounded-full p-2 hover:bg-slate-200"
+                  >
                     <Settings className="text-primary rounded-full" />
                   </Link>
+                  <div className="grid mx-auto rounded-full p-2 hover:bg-slate-200 cursor-pointer">
+                    <RefreshCcw
+                      onClick={requestDispositivos}
+                      className="text-primary rounded-full"
+                    />
+                  </div>
                 </TableCell>
               </TableRow>
             ))
           ) : (
             <TableRow className="text-center">
-              <TableCell colSpan={5} className="text-center">
+              <TableCell colSpan={6} className="text-center">
                 Nenhum dispositivo encontrado
               </TableCell>
             </TableRow>
           )}
+          <TableRow>
+            <TableCell colSpan={6}>
+              <Button
+                onClick={() => setIsModalCreateDipositivoOpen(true)}
+                className="w-full"
+              >
+                Adicionar dispositivo
+              </Button>
+            </TableCell>
+          </TableRow>
         </TableBody>
       </Table>
+
+      <Dialog
+        open={isModalCreateDipositivoOpen}
+        onOpenChange={setIsModalCreateDipositivoOpen}
+      >
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Adicionar dispositivo</DialogTitle>
+          </DialogHeader>
+          <Form {...createDispositivoForm}>
+            <form
+              onSubmit={createDispositivoForm.handleSubmit(createDispositivo)}
+            >
+              <FormField
+                name="nome"
+                control={createDispositivoForm.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Nome do dispositivo</FormLabel>
+                    <FormControl>
+                      <Input placeholder="Nome do dispositivo" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <Button className="w-full mt-2">Adicionar</Button>
+            </form>
+          </Form>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };

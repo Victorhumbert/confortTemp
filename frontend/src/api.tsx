@@ -1,10 +1,18 @@
-import { ClimaProps, FormProps, ResponseLogin } from "@/interfaces";
+import {
+  ClimaProps,
+  FormProps,
+  IRequestCreateDispositivo,
+  ResponseLogin,
+} from "@/interfaces";
 import { toast } from "sonner";
 
 const URL_BASE = "http://localhost:3000"; // Local
 // const URL_BASE = "https://conforttemp-backend.onrender.com"; // Prod
 
-export async function login(email: string, senha: string): Promise<ResponseLogin> {
+export async function login(
+  email: string,
+  senha: string
+): Promise<ResponseLogin> {
   try {
     toast.loading("Logando...");
     const response = await fetch(`${URL_BASE}/api/login`, {
@@ -50,9 +58,7 @@ export async function climaAtual(
 ): Promise<ClimaProps | undefined> {
   try {
     toast.loading("Buscando dados da temperatura...");
-    const response = await fetch(
-      `${URL_BASE}/api/clima/${lat}/${long}`
-    );
+    const response = await fetch(`${URL_BASE}/api/clima/${lat}/${long}`);
     toast.success("Temperatura capturada!");
     return await response.json();
   } catch (error) {
@@ -74,5 +80,25 @@ export async function GetDispositivos(id: number): Promise<any> {
   } catch (error) {
     console.error("Erro:", error);
     return null;
+  }
+}
+
+export async function RequestCreateDispositivo(
+  data: IRequestCreateDispositivo
+): Promise<void> {
+  try {
+    const response = await fetch(`${URL_BASE}/api/dispositivos`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+    console.log(data);
+    if (!response.ok) {
+      throw new Error(`Erro ao buscar dados: ${response.statusText}`);
+    }
+  } catch (error) {
+    console.error("Erro:", error);
   }
 }
