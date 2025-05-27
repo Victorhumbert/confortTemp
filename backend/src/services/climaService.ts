@@ -1,1 +1,1 @@
-export { fetchClima } from "../utils/fetchClima.ts";
+export { fetchClima } from "../utils/fetchClima";

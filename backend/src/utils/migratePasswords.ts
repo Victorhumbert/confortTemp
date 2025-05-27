@@ -1,5 +1,5 @@
 // src/utils/migratePasswords.ts
-import { prisma } from "../prismaClient.ts";
+import { prisma } from "../prismaClient";
 import bcrypt from "bcrypt";
 
 async function migrate() {

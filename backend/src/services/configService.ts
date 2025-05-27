@@ -1,5 +1,5 @@
 // configService.ts
-import { prisma } from "../prismaClient.ts";
+import { prisma } from "../prismaClient";
 export function create(data: any) {
   return prisma.config.create({ data });
 }

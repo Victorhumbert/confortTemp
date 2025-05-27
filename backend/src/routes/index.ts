@@ -1,10 +1,10 @@
 // src/routes/index.ts
 import { Router } from "express";
-import authRoutes from "./authRoutes.ts";
-import userRoutes from "./userRoutes.ts";
-import dispositivoRoutes from "./dispositivoRoutes.ts";
-import configRoutes from "./configRoutes.ts";
-import climaRoutes from "./climaRoutes.ts";
+import authRoutes from "./authRoutes";
+import userRoutes from "./userRoutes";
+import dispositivoRoutes from "./dispositivoRoutes";
+import configRoutes from "./configRoutes";
+import climaRoutes from "./climaRoutes";
 
 const router = Router();
 router.use(authRoutes);

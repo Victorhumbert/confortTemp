@@ -1,4 +1,4 @@
-import { prisma } from "../prismaClient.ts";
+import { prisma } from "../prismaClient";
 export function getAllUsers() {
   return prisma.user.findMany({ include: { dispositivos: true } });
 }

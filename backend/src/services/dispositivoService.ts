@@ -1,5 +1,5 @@
 // src/services/dispositivoService.ts
-import { prisma } from "../prismaClient.ts";
+import { prisma } from "../prismaClient";
 
 interface DispDTO {
   nome: string;

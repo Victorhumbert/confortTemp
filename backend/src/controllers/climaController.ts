@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { fetchClima } from "../services/climaService.ts";
+import { fetchClima } from "../services/climaService";
 
 export async function getClima(req: Request, res: Response) {
   try {

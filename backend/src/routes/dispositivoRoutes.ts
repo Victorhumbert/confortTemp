@@ -7,7 +7,7 @@ import {
   updateDispositivo,
   deleteDispositivo,
   listUserDispositivos,
-} from "../controllers/dispositivoController.ts";
+} from "../controllers/dispositivoController";
 
 const router = Router();
 

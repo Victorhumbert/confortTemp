@@ -1,6 +1,6 @@
 // configController.ts
 import { Request, Response } from "express";
-import * as configService from "../services/configService.ts";
+import * as configService from "../services/configService";
 export async function createConfig(req: Request, res: Response) {
   /*…*/
 }

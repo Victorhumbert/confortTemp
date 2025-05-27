@@ -1,6 +1,6 @@
 // src/controllers/dispositivoController.ts
 import { Request, Response } from "express";
-import * as svc from "../services/dispositivoService.ts";
+import * as svc from "../services/dispositivoService";
 
 export async function createDispositivo(req: Request, res: Response) {
   try {

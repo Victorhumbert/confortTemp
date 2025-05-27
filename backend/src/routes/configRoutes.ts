@@ -1,6 +1,6 @@
 // configRoutes.ts
 import { Router } from "express";
-import { createConfig, updateConfig, getConfigById } from "../controllers/configController.ts";
+import { createConfig, updateConfig, getConfigById } from "../controllers/configController";
 const router = Router();
 router.post("/config", createConfig);
 router.put("/config/:id", updateConfig);
