@@ -89,13 +89,6 @@ export const DashBoard = () => {
   }, []);
 
   useEffect(() => {
-    setInterval(() => {
-      console.log("Recarregando dispositivos...");
-      requestDispositivos(true);
-    }, 20000);
-  }, []);
-
-  useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(success, error);
     } else {
