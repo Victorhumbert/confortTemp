@@ -44,17 +44,12 @@ import { Input } from "@/components/ui/input";
 import BluetoothScanner from "@/components/BluetoothScanner";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { toast } from "sonner";
+import { useAuth } from "@/contexts/AuthContext";
 
 export const DashBoard = () => {
   const [bairroName, setBairroName] = useState("");
-  const userData = localStorage.getItem("user");
-  if (!userData) {
-    console.error("Erro ao obter os dados do usuário.");
-    return null;
-  }
-  const userFormatado = JSON.parse(userData);
-  const idUser = userFormatado.id;
-  const username = userFormatado.username;
+  const { user } = useAuth();
+  console.log(user)
   const [temperatura, setTemperatura] = useState(0);
   const [dispositivos, setDispositivos] = useState<DispositivoProps[]>([]);
   const [isModalCreateDipositivoOpen, setIsModalCreateDipositivoOpen] =
@@ -64,6 +59,10 @@ export const DashBoard = () => {
   const createDispositivoForm = useForm<DispositivoProps>();
 
   async function requestDispositivos(refresh: boolean = false) {
+    if (!user) {
+      return <Navigate to="/login" replace />;
+    }
+    const idUser = user.id;
     try {
       toast.loading(
         refresh ? "Recarregar dados..." : "Buscando dispositivos..."
@@ -112,6 +111,10 @@ export const DashBoard = () => {
   }, []);
 
   async function createDispositivo(data: DispositivoProps) {
+    if (!user) {
+      return <Navigate to="/login" replace />;
+    }
+    const idUser = +user.id;
     try {
       setIsSubmiting(true);
       await RequestCreateDispositivo({ nome: data.nome, userId: idUser });
@@ -128,7 +131,7 @@ export const DashBoard = () => {
     <div className="w-screen h-screen">
       <Header />
       <h1 className="text-3xl text-center my-12 text-yellow-800">
-        Seja bem vindo, {username}!
+        Seja bem vindo, {user?.username}!
       </h1>
 
       <div className="grid justify-center">

@@ -32,6 +32,8 @@ const limitsSchema = z.object({
 });
 
 export const SettingsPage = () => {
+
+  
   // Formulário para Atualizar E-mail
   const emailForm = useForm({
     resolver: zodResolver(emailSchema),

@@ -5,7 +5,7 @@ import {
   FormItem,
   FormLabel,
 } from "@/components/ui/form";
-import { useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Lock, User } from "lucide-react";
@@ -15,25 +15,22 @@ import Logo from "@/assets/logo_ComFortTemp.svg?react";
 import { login } from "@/api";
 import { toast } from "sonner";
 import { LoginProps, ResponseLogin } from "@/interfaces";
+import { useAuth } from "@/contexts/AuthContext";
 
 export const LoginPage = () => {
   const navigation = useNavigate();
   const loginForm = useForm<LoginProps>();
+  const {signin} = useAuth();
 
-  async function handleLogin(data: LoginProps) {
+    const handleLogin: SubmitHandler<LoginProps> = async (data) => {
     try {
-      await login(data.email, data.senha).then((r: ResponseLogin) => {
-        if (r.status === 200) {
-          localStorage.setItem("token", r.token);
-          localStorage.setItem("user", JSON.stringify(r.user));
-          navigation(`/dashboard/`)
-        } else toast.error("Usuário ou senha inválidos!")
-      });
-    } catch (error) {
-      console.error("Erro ao fazer login:", error);
-      toast.error("Erro ao fazer login: " + error);
+      await signin(data.email, data.senha);
+      navigation('/dashboard');
+    } catch (error: any) {
+      console.error('Erro ao fazer login:', error);
+      toast.error(error.message || 'Usuário ou senha inválidos!');
     }
-  }
+  };
 
   return (
     <div className="flex justify-between">
