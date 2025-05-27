@@ -5,7 +5,6 @@
     "target": "ES2022",
     "esModuleInterop": true,
     "strict": true,
-    "allowImportingTsExtensions": true,
     "outDir": "dist"
   },
   "include": ["src/**/*.ts", "infra/**/*.ts"]
