@@ -29,6 +29,7 @@ model Dispositivo {
   nome      String
   userId    Int
   user      User?       @relation(fields: [userId], references: [id])
+  ativo     Int         @default(1)
   config    Config[]
   historico Historico[]
 }

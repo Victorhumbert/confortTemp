@@ -6,10 +6,11 @@
   "scripts": {
     "dev": "nodemon",
     "build": "tsc",
-    "start": "node dist/infra/server.js"
+    "start": "node dist/infra/server.js",
+    "migrate:passwords": "npx prisma generate && nodemon --watch src/utils/migratePasswords.ts --exec \"node --loader ts-node/esm src/utils/migratePasswords.ts\""
   },
   "dependencies": {
-    "@prisma/client": "^6.5.0",
+    "@prisma/client": "^6.8.2",
     "bcrypt": "^5.1.1",
     "body-parser": "^1.20.3",
     "cors": "^2.8.5",
@@ -28,7 +29,8 @@
     "@types/node": "^22.9.0",
     "globals": "^16.0.0",
     "nodemon": "^3.1.10",
+    "ts-node": "^10.9.2",
     "ts-node-dev": "^2.0.0",
-    "typescript": "^5.5.3"
+    "typescript": "^5.8.3"
   }
 }

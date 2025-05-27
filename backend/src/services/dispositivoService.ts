@@ -1,23 +1,39 @@
 // src/services/dispositivoService.ts
 import { prisma } from "../prismaClient.ts";
 
-interface DispDTO { nome: string; userId: number; }
+interface DispDTO {
+  nome: string;
+  userId: number;
+}
 
-export function createWithConfig({ nome, userId }: DispDTO) {
-  return prisma.dispositivo.create({
-    data: {
-      nome,
-      userId,
-      config: {
-        create: { temperatura: 0, umidade: 0, sensor: false },
+export async function createWithConfig({ nome, userId }: DispDTO) {
+  const dispositivo = await prisma.dispositivo
+    .create({
+      data: {
+        nome,
+        userId,
       },
-    },
-    include: { config: true },
-  });
+      include: { config: true },
+    })
+    .then(async (dispositivo) => {
+      console.log("Dispositivo criado:", dispositivo);
+      const teste = await prisma.config.create({
+        data: {
+          dispositivosId: dispositivo.id,
+        },
+      });
+
+      console.log("Configuração criada:", teste);
+    });
+
+  return dispositivo;
 }
 
 export function getAllDispositivos() {
   return prisma.dispositivo.findMany({
+    where: {
+      ativo: 1,
+    },
     include: { user: true, config: true, historico: true },
   });
 }
@@ -29,7 +45,10 @@ export function getDispositivo(id: number) {
   });
 }
 
-export function updateConfig(dispositivoId: number, data: { temperatura: number }) {
+export function updateConfig(
+  dispositivoId: number,
+  data: { temperatura: number }
+) {
   return prisma.config.update({
     where: { dispositivosId: dispositivoId },
     data: { temperatura: data.temperatura, updatedAt: new Date() },
@@ -42,7 +61,7 @@ export function removeDispositivo(id: number) {
 
 export function getByUserId(userId: number) {
   return prisma.dispositivo.findMany({
-    where: { userId },
+    where: { userId, ativo: 1 },
     include: { user: true, config: true, historico: true },
   });
 }

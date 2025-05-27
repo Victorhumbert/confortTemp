@@ -1,5 +1,11 @@
 // configService.ts
 import { prisma } from "../prismaClient.ts";
-export function create(data: any) { return prisma.config.create({ data }); }
-export function update(id: number, data: any) { return prisma.config.update({ where: { id }, data }); }
-export function getById(id: number) { return prisma.config.findUnique({ where: { id } }); }
+export function create(data: any) {
+  return prisma.config.create({ data });
+}
+export function update(id: number, data: any) {
+  return prisma.config.update({ where: { id }, data });
+}
+export function getById(id: number) {
+  return prisma.config.findUnique({ where: { id } });
+}

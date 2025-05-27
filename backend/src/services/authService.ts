@@ -25,12 +25,14 @@ export async function registerUser({ username, email, senha }: AuthDTO) {
 
 export async function loginUser({ email, senha }: AuthDTO) {
   const user = await prisma.user.findFirst({ where: { email } });
+
   if (!user || !(await bcrypt.compare(senha, user.senha)))
     throw { status: 401, message: "Usuário ou senha inválidos" };
 
   const token = jwt.sign({ id: user.id, email }, JWT_SECRET, {
     expiresIn: "24h",
   });
+  
   const { senha: _, ...userData } = user;
   return {
     status: 200,

@@ -2566,29 +2566,34 @@ export namespace Prisma {
   export type DispositivoAvgAggregateOutputType = {
     id: number | null
     userId: number | null
+    ativo: number | null
   }
 
   export type DispositivoSumAggregateOutputType = {
     id: number | null
     userId: number | null
+    ativo: number | null
   }
 
   export type DispositivoMinAggregateOutputType = {
     id: number | null
     nome: string | null
     userId: number | null
+    ativo: number | null
   }
 
   export type DispositivoMaxAggregateOutputType = {
     id: number | null
     nome: string | null
     userId: number | null
+    ativo: number | null
   }
 
   export type DispositivoCountAggregateOutputType = {
     id: number
     nome: number
     userId: number
+    ativo: number
     _all: number
   }
 
@@ -2596,29 +2601,34 @@ export namespace Prisma {
   export type DispositivoAvgAggregateInputType = {
     id?: true
     userId?: true
+    ativo?: true
   }
 
   export type DispositivoSumAggregateInputType = {
     id?: true
     userId?: true
+    ativo?: true
   }
 
   export type DispositivoMinAggregateInputType = {
     id?: true
     nome?: true
     userId?: true
+    ativo?: true
   }
 
   export type DispositivoMaxAggregateInputType = {
     id?: true
     nome?: true
     userId?: true
+    ativo?: true
   }
 
   export type DispositivoCountAggregateInputType = {
     id?: true
     nome?: true
     userId?: true
+    ativo?: true
     _all?: true
   }
 
@@ -2712,6 +2722,7 @@ export namespace Prisma {
     id: number
     nome: string
     userId: number
+    ativo: number
     _count: DispositivoCountAggregateOutputType | null
     _avg: DispositivoAvgAggregateOutputType | null
     _sum: DispositivoSumAggregateOutputType | null
@@ -2737,6 +2748,7 @@ export namespace Prisma {
     id?: boolean
     nome?: boolean
     userId?: boolean
+    ativo?: boolean
     user?: boolean | Dispositivo$userArgs<ExtArgs>
     config?: boolean | Dispositivo$configArgs<ExtArgs>
     historico?: boolean | Dispositivo$historicoArgs<ExtArgs>
@@ -2747,6 +2759,7 @@ export namespace Prisma {
     id?: boolean
     nome?: boolean
     userId?: boolean
+    ativo?: boolean
     user?: boolean | Dispositivo$userArgs<ExtArgs>
   }, ExtArgs["result"]["dispositivo"]>
 
@@ -2754,6 +2767,7 @@ export namespace Prisma {
     id?: boolean
     nome?: boolean
     userId?: boolean
+    ativo?: boolean
     user?: boolean | Dispositivo$userArgs<ExtArgs>
   }, ExtArgs["result"]["dispositivo"]>
 
@@ -2761,9 +2775,10 @@ export namespace Prisma {
     id?: boolean
     nome?: boolean
     userId?: boolean
+    ativo?: boolean
   }
 
-  export type DispositivoOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "nome" | "userId", ExtArgs["result"]["dispositivo"]>
+  export type DispositivoOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "nome" | "userId" | "ativo", ExtArgs["result"]["dispositivo"]>
   export type DispositivoInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     user?: boolean | Dispositivo$userArgs<ExtArgs>
     config?: boolean | Dispositivo$configArgs<ExtArgs>
@@ -2788,6 +2803,7 @@ export namespace Prisma {
       id: number
       nome: string
       userId: number
+      ativo: number
     }, ExtArgs["result"]["dispositivo"]>
     composites: {}
   }
@@ -3217,6 +3233,7 @@ export namespace Prisma {
     readonly id: FieldRef<"Dispositivo", 'Int'>
     readonly nome: FieldRef<"Dispositivo", 'String'>
     readonly userId: FieldRef<"Dispositivo", 'Int'>
+    readonly ativo: FieldRef<"Dispositivo", 'Int'>
   }
     
 
@@ -8303,7 +8320,8 @@ export namespace Prisma {
   export const DispositivoScalarFieldEnum: {
     id: 'id',
     nome: 'nome',
-    userId: 'userId'
+    userId: 'userId',
+    ativo: 'ativo'
   };
 
   export type DispositivoScalarFieldEnum = (typeof DispositivoScalarFieldEnum)[keyof typeof DispositivoScalarFieldEnum]
@@ -8519,6 +8537,7 @@ export namespace Prisma {
     id?: IntFilter<"Dispositivo"> | number
     nome?: StringFilter<"Dispositivo"> | string
     userId?: IntFilter<"Dispositivo"> | number
+    ativo?: IntFilter<"Dispositivo"> | number
     user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     config?: ConfigListRelationFilter
     historico?: HistoricoListRelationFilter
@@ -8528,6 +8547,7 @@ export namespace Prisma {
     id?: SortOrder
     nome?: SortOrder
     userId?: SortOrder
+    ativo?: SortOrder
     user?: UserOrderByWithRelationInput
     config?: ConfigOrderByRelationAggregateInput
     historico?: HistoricoOrderByRelationAggregateInput
@@ -8540,6 +8560,7 @@ export namespace Prisma {
     NOT?: DispositivoWhereInput | DispositivoWhereInput[]
     nome?: StringFilter<"Dispositivo"> | string
     userId?: IntFilter<"Dispositivo"> | number
+    ativo?: IntFilter<"Dispositivo"> | number
     user?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     config?: ConfigListRelationFilter
     historico?: HistoricoListRelationFilter
@@ -8549,6 +8570,7 @@ export namespace Prisma {
     id?: SortOrder
     nome?: SortOrder
     userId?: SortOrder
+    ativo?: SortOrder
     _count?: DispositivoCountOrderByAggregateInput
     _avg?: DispositivoAvgOrderByAggregateInput
     _max?: DispositivoMaxOrderByAggregateInput
@@ -8563,6 +8585,7 @@ export namespace Prisma {
     id?: IntWithAggregatesFilter<"Dispositivo"> | number
     nome?: StringWithAggregatesFilter<"Dispositivo"> | string
     userId?: IntWithAggregatesFilter<"Dispositivo"> | number
+    ativo?: IntWithAggregatesFilter<"Dispositivo"> | number
   }
 
   export type ConfigWhereInput = {
@@ -8875,6 +8898,7 @@ export namespace Prisma {
 
   export type DispositivoCreateInput = {
     nome: string
+    ativo?: number
     user?: UserCreateNestedOneWithoutDispositivosInput
     config?: ConfigCreateNestedManyWithoutDispositivosInput
     historico?: HistoricoCreateNestedManyWithoutDispositivoInput
@@ -8884,12 +8908,14 @@ export namespace Prisma {
     id?: number
     nome: string
     userId: number
+    ativo?: number
     config?: ConfigUncheckedCreateNestedManyWithoutDispositivosInput
     historico?: HistoricoUncheckedCreateNestedManyWithoutDispositivoInput
   }
 
   export type DispositivoUpdateInput = {
     nome?: StringFieldUpdateOperationsInput | string
+    ativo?: IntFieldUpdateOperationsInput | number
     user?: UserUpdateOneWithoutDispositivosNestedInput
     config?: ConfigUpdateManyWithoutDispositivosNestedInput
     historico?: HistoricoUpdateManyWithoutDispositivoNestedInput
@@ -8899,6 +8925,7 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     nome?: StringFieldUpdateOperationsInput | string
     userId?: IntFieldUpdateOperationsInput | number
+    ativo?: IntFieldUpdateOperationsInput | number
     config?: ConfigUncheckedUpdateManyWithoutDispositivosNestedInput
     historico?: HistoricoUncheckedUpdateManyWithoutDispositivoNestedInput
   }
@@ -8907,16 +8934,19 @@ export namespace Prisma {
     id?: number
     nome: string
     userId: number
+    ativo?: number
   }
 
   export type DispositivoUpdateManyMutationInput = {
     nome?: StringFieldUpdateOperationsInput | string
+    ativo?: IntFieldUpdateOperationsInput | number
   }
 
   export type DispositivoUncheckedUpdateManyInput = {
     id?: IntFieldUpdateOperationsInput | number
     nome?: StringFieldUpdateOperationsInput | string
     userId?: IntFieldUpdateOperationsInput | number
+    ativo?: IntFieldUpdateOperationsInput | number
   }
 
   export type ConfigCreateInput = {
@@ -9347,28 +9377,33 @@ export namespace Prisma {
     id?: SortOrder
     nome?: SortOrder
     userId?: SortOrder
+    ativo?: SortOrder
   }
 
   export type DispositivoAvgOrderByAggregateInput = {
     id?: SortOrder
     userId?: SortOrder
+    ativo?: SortOrder
   }
 
   export type DispositivoMaxOrderByAggregateInput = {
     id?: SortOrder
     nome?: SortOrder
     userId?: SortOrder
+    ativo?: SortOrder
   }
 
   export type DispositivoMinOrderByAggregateInput = {
     id?: SortOrder
     nome?: SortOrder
     userId?: SortOrder
+    ativo?: SortOrder
   }
 
   export type DispositivoSumOrderByAggregateInput = {
     id?: SortOrder
     userId?: SortOrder
+    ativo?: SortOrder
   }
 
   export type BoolFilter<$PrismaModel = never> = {
@@ -10153,6 +10188,7 @@ export namespace Prisma {
 
   export type DispositivoCreateWithoutUserInput = {
     nome: string
+    ativo?: number
     config?: ConfigCreateNestedManyWithoutDispositivosInput
     historico?: HistoricoCreateNestedManyWithoutDispositivoInput
   }
@@ -10160,6 +10196,7 @@ export namespace Prisma {
   export type DispositivoUncheckedCreateWithoutUserInput = {
     id?: number
     nome: string
+    ativo?: number
     config?: ConfigUncheckedCreateNestedManyWithoutDispositivosInput
     historico?: HistoricoUncheckedCreateNestedManyWithoutDispositivoInput
   }
@@ -10197,6 +10234,7 @@ export namespace Prisma {
     id?: IntFilter<"Dispositivo"> | number
     nome?: StringFilter<"Dispositivo"> | string
     userId?: IntFilter<"Dispositivo"> | number
+    ativo?: IntFilter<"Dispositivo"> | number
   }
 
   export type UserCreateWithoutDispositivosInput = {
@@ -10367,6 +10405,7 @@ export namespace Prisma {
 
   export type DispositivoCreateWithoutConfigInput = {
     nome: string
+    ativo?: number
     user?: UserCreateNestedOneWithoutDispositivosInput
     historico?: HistoricoCreateNestedManyWithoutDispositivoInput
   }
@@ -10375,6 +10414,7 @@ export namespace Prisma {
     id?: number
     nome: string
     userId: number
+    ativo?: number
     historico?: HistoricoUncheckedCreateNestedManyWithoutDispositivoInput
   }
 
@@ -10396,6 +10436,7 @@ export namespace Prisma {
 
   export type DispositivoUpdateWithoutConfigInput = {
     nome?: StringFieldUpdateOperationsInput | string
+    ativo?: IntFieldUpdateOperationsInput | number
     user?: UserUpdateOneWithoutDispositivosNestedInput
     historico?: HistoricoUpdateManyWithoutDispositivoNestedInput
   }
@@ -10404,11 +10445,13 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     nome?: StringFieldUpdateOperationsInput | string
     userId?: IntFieldUpdateOperationsInput | number
+    ativo?: IntFieldUpdateOperationsInput | number
     historico?: HistoricoUncheckedUpdateManyWithoutDispositivoNestedInput
   }
 
   export type DispositivoCreateWithoutHistoricoInput = {
     nome: string
+    ativo?: number
     user?: UserCreateNestedOneWithoutDispositivosInput
     config?: ConfigCreateNestedManyWithoutDispositivosInput
   }
@@ -10417,6 +10460,7 @@ export namespace Prisma {
     id?: number
     nome: string
     userId: number
+    ativo?: number
     config?: ConfigUncheckedCreateNestedManyWithoutDispositivosInput
   }
 
@@ -10480,6 +10524,7 @@ export namespace Prisma {
 
   export type DispositivoUpdateWithoutHistoricoInput = {
     nome?: StringFieldUpdateOperationsInput | string
+    ativo?: IntFieldUpdateOperationsInput | number
     user?: UserUpdateOneWithoutDispositivosNestedInput
     config?: ConfigUpdateManyWithoutDispositivosNestedInput
   }
@@ -10488,6 +10533,7 @@ export namespace Prisma {
     id?: IntFieldUpdateOperationsInput | number
     nome?: StringFieldUpdateOperationsInput | string
     userId?: IntFieldUpdateOperationsInput | number
+    ativo?: IntFieldUpdateOperationsInput | number
     config?: ConfigUncheckedUpdateManyWithoutDispositivosNestedInput
   }
 
@@ -10622,10 +10668,12 @@ export namespace Prisma {
   export type DispositivoCreateManyUserInput = {
     id?: number
     nome: string
+    ativo?: number
   }
 
   export type DispositivoUpdateWithoutUserInput = {
     nome?: StringFieldUpdateOperationsInput | string
+    ativo?: IntFieldUpdateOperationsInput | number
     config?: ConfigUpdateManyWithoutDispositivosNestedInput
     historico?: HistoricoUpdateManyWithoutDispositivoNestedInput
   }
@@ -10633,6 +10681,7 @@ export namespace Prisma {
   export type DispositivoUncheckedUpdateWithoutUserInput = {
     id?: IntFieldUpdateOperationsInput | number
     nome?: StringFieldUpdateOperationsInput | string
+    ativo?: IntFieldUpdateOperationsInput | number
     config?: ConfigUncheckedUpdateManyWithoutDispositivosNestedInput
     historico?: HistoricoUncheckedUpdateManyWithoutDispositivoNestedInput
   }
@@ -10640,6 +10689,7 @@ export namespace Prisma {
   export type DispositivoUncheckedUpdateManyWithoutUserInput = {
     id?: IntFieldUpdateOperationsInput | number
     nome?: StringFieldUpdateOperationsInput | string
+    ativo?: IntFieldUpdateOperationsInput | number
   }
 
   export type ConfigCreateManyDispositivosInput = {
