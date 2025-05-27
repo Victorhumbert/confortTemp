@@ -1,8 +1,0 @@
-{
-  "watch": ["src/**/*.ts", "infra/**/*.ts"],
-  "ext": "ts,js,json",
-  "exec": "npx prisma generate && node --loader ts-node/esm infra/server.ts",
-  "env": {
-    "TS_NODE_PROJECT": "tsconfig.node.json"
-  }
-}

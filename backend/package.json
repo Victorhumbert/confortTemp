@@ -2,9 +2,8 @@
   "name": "conforttemp-backend",
   "private": true,
   "version": "1.1.0",
-  "type": "module",
   "scripts": {
-    "dev": "nodemon",
+    "dev": "prisma generate && ts-node-dev --respawn --transpile-only -P tsconfig.node.json infra/server.ts",
     "build": "tsc -p tsconfig.node.json",
     "postinstall": "npm run build",
     "start": "node dist/infra/server.js",
@@ -29,7 +28,6 @@
     "@types/jsonwebtoken": "^9.0.9",
     "@types/node": "^22.9.0",
     "globals": "^16.0.0",
-    "nodemon": "^3.1.10",
     "ts-node": "^10.9.2",
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.8.3"

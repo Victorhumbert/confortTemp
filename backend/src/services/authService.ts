@@ -1,5 +1,5 @@
 // src/services/authService.ts
-import { prisma } from "../prismaClient.ts";
+import { prisma } from "../prismaClient";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
