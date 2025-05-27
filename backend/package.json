@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "prisma generate && ts-node-dev --respawn --transpile-only -P tsconfig.node.json infra/server.ts",
     "build": "tsc -p tsconfig.node.json",
-    "postinstall": "npm run build",
+    "postinstall": "prisma generate && npm run build",
     "start": "node dist/infra/server.js",
     "migrate:passwords": "npx prisma generate && nodemon --watch src/utils/migratePasswords.ts --exec \"node --loader ts-node/esm src/utils/migratePasswords.ts\""
   },
