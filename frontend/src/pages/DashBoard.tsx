@@ -47,9 +47,8 @@ import { toast } from "sonner";
 import { useAuth } from "@/contexts/AuthContext";
 
 export const DashBoard = () => {
-  const [bairroName, setBairroName] = useState("");
   const { user } = useAuth();
-  console.log(user)
+  const [bairroName, setBairroName] = useState("");
   const [temperatura, setTemperatura] = useState(0);
   const [dispositivos, setDispositivos] = useState<DispositivoProps[]>([]);
   const [isModalCreateDipositivoOpen, setIsModalCreateDipositivoOpen] =
@@ -130,7 +129,7 @@ export const DashBoard = () => {
   return (
     <div className="w-screen h-screen">
       <Header />
-      <h1 className="text-3xl text-center my-12 text-yellow-800">
+      <h1 className="text-3xl text-center my-12">
         Seja bem vindo, {user?.username}!
       </h1>
 

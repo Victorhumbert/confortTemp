@@ -24,6 +24,7 @@ export async function getDispositivoById(req: Request, res: Response) {
 }
 
 export async function updateDispositivo(req: Request, res: Response) {
+  console.log("Atualizando dispositivo", req.params.id, req.body);
   try {
     const updated = await svc.updateConfig(+req.params.id, req.body);
     res.json({ data: updated, message: "Dados atualizados com sucesso!" });

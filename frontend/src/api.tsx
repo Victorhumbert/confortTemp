@@ -2,12 +2,14 @@ import {
   ClimaProps,
   FormProps,
   IRequestCreateDispositivo,
+  IRequestUpdateDispositivoBody,
+  IResponseGetDispositivoData,
   ResponseLogin,
 } from "@/interfaces";
 import { toast } from "sonner";
 
-// const URL_BASE = "http://localhost:3000"; // Local
-const URL_BASE = "https://conforttemp-backend.onrender.com"; // Prod
+const URL_BASE = "http://localhost:3000"; // Local
+// const URL_BASE = "https://conforttemp-backend.onrender.com"; // Prod
 
 export async function login(
   email: string,
@@ -98,6 +100,50 @@ export async function RequestCreateDispositivo(
     if (!response.ok) {
       throw new Error(`Erro ao buscar dados: ${response.statusText}`);
     }
+  } catch (error) {
+    console.error("Erro:", error);
+  }
+}
+
+export async function RequestGetDispositivoData(
+  token: string,
+  idDispositivo: number
+): Promise<IResponseGetDispositivoData | void> {
+  try {
+    const response = await fetch(`${URL_BASE}/api/dispositivos/${idDispositivo}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    if (!response.ok) {
+      throw new Error(`Erro ao buscar dados: ${response.statusText}`);
+    }
+    return await response.json();
+  } catch (error) {
+    console.error("Erro:", error);
+  }
+}
+
+export async function RequestUpdateDispositivoData(
+  token: string,
+  idDispositivo: number,
+  data: IRequestUpdateDispositivoBody
+): Promise<IResponseGetDispositivoData | void> {
+  try {
+    const response = await fetch(`${URL_BASE}/api/dispositivos/${idDispositivo}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(data),
+    });
+    if (!response.ok) {
+      throw new Error(`Erro atualizar dados: ${response.statusText}`);
+    }
+    return await response.json();
   } catch (error) {
     console.error("Erro:", error);
   }

@@ -47,11 +47,11 @@ export function getDispositivo(id: number) {
 
 export function updateConfig(
   dispositivoId: number,
-  data: { temperatura: number }
+  data: { temperaturaMin: number,temperaturaMax: number, motionMax: number   }
 ) {
   return prisma.config.update({
     where: { dispositivosId: dispositivoId },
-    data: { temperatura: data.temperatura, updatedAt: new Date() },
+    data: { ...data, updatedAt: new Date() },
   });
 }
 

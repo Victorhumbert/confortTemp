@@ -14,6 +14,7 @@ export interface ResponseLogin {
   token: string;
   status: number;
   user: {
+    username: string;
     id: number;
     nome: string;
     email: string;
@@ -59,4 +60,12 @@ export interface DispositivoProps {
 export interface IRequestCreateDispositivo {
   userId: number;
   nome: string;
+}
+
+export interface IResponseGetDispositivoData extends DispositivoProps {}
+
+export interface IRequestUpdateDispositivoBody {
+  temperaturaMin: number;
+  temperaturaMax: number;
+  motionMax: number;
 }

@@ -15,6 +15,7 @@ interface User {
   id: string;
   username: string;
   email: string;
+  token: string;
 }
 
 interface AuthContextData {
@@ -83,7 +84,11 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
     // decodifica para extrair user
     const payload = jwtDecode<JwtPayload & User>(token);
-    const loggedUser: User = { ...payload };
+    const loggedUser: User = {
+      ...payload,
+      token: token,
+      username: response.user.username,
+    };
     setUser(loggedUser);
     setLoading(false);
   };
