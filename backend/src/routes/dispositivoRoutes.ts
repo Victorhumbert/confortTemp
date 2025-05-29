@@ -13,6 +13,7 @@ const router = Router();
 
 router.post("/dispositivos", createDispositivo);
 router.get("/dispositivos", listDispositivos);
+router.get("/dispositivos/:id", getDispositivoById);
 router.put("/dispositivos/:id", updateDispositivo);
 router.delete("/dispositivos/:id", deleteDispositivo);
 router.get("/user/:id/dispositivos", listUserDispositivos);
