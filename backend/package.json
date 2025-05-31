@@ -10,15 +10,14 @@
     "migrate:passwords": "npx prisma generate && nodemon --watch src/utils/migratePasswords.ts --exec \"node --loader ts-node/esm src/utils/migratePasswords.ts\""
   },
   "dependencies": {
-    "@prisma/client": "^6.6.0",
+    "@prisma/client": "^6.8.2",
     "bcrypt": "^5.1.1",
     "body-parser": "^1.20.3",
     "cors": "^2.8.5",
     "dotenv": "^16.5.0",
     "express": "^4.21.2",
     "jsonwebtoken": "^9.0.2",
-    "node-fetch": "^3.3.2",
-    "prisma": "^6.5.0"
+    "node-fetch": "^3.3.2"
   },
   "devDependencies": {
     "@eslint/js": "^9.24.0",
@@ -28,6 +27,7 @@
     "@types/jsonwebtoken": "^9.0.9",
     "@types/node": "^22.9.0",
     "globals": "^16.0.0",
+    "prisma": "^6.8.2",
     "ts-node": "^10.9.2",
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.8.3"
