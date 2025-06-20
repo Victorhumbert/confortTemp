@@ -10,7 +10,7 @@
     "migrate:passwords": "npx prisma generate && nodemon --watch src/utils/migratePasswords.ts --exec \"node --loader ts-node/esm src/utils/migratePasswords.ts\""
   },
   "dependencies": {
-    "@prisma/client": "^6.8.2",
+    "@prisma/client": "^6.10.1",
     "bcrypt": "^5.1.1",
     "body-parser": "^1.20.3",
     "cors": "^2.8.5",

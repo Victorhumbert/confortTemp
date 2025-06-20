@@ -15,7 +15,7 @@ export async function createWithConfig({ nome, userId }: DispDTO) {
       },
       include: { config: true },
     })
-    .then(async (dispositivo) => {
+    .then(async (dispositivo: any) => {
       console.log("Dispositivo criado:", dispositivo);
       const teste = await prisma.config.create({
         data: {

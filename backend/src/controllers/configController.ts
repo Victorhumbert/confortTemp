@@ -4,9 +4,6 @@ import * as configService from "../services/configService";
 export async function createConfig(req: Request, res: Response) {
   /*…*/
 }
-export async function updateConfig(req: Request, res: Response) {
-  /*…*/
-}
 export async function getConfigById(req: Request, res: Response) {
   try {
     const config = configService.getById(Number(req.params.id));
