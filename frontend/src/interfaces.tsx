@@ -22,8 +22,8 @@ export interface ResponseLogin {
   };
 }
 
-export interface FormProps {
-  temperatura: number;
+export interface ClimatizacaoProps {
+  climatizacao: number;
 }
 
 export interface ClimaProps {
@@ -37,6 +37,7 @@ export interface ClimaProps {
 export interface DispositivoProps {
   id: number;
   nome: string;
+  local: string;
   config: {
     id: number;
     dispositivoId: number;

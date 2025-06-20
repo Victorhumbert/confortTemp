@@ -162,11 +162,12 @@ export const DashBoard = () => {
           </HoverCard>
         </div>
         <div className="grid mx-2 border rounded-md p-2">
-          <ScrollArea className="grid h-[350px]">
+          <ScrollArea className="grid h-[320px]">
             <Table className="mx-auto">
               <TableHeader>
                 <TableRow>
                   <TableHead className="w-[100px] text-center">Nome</TableHead>
+                  <TableHead className="w-[100px] text-center">Local</TableHead>
                   <TableHead className="text-center">Temperatura</TableHead>
                   <TableHead className="text-center">Umidade</TableHead>
                   <TableHead className="text-center">Luzes</TableHead>
@@ -183,6 +184,9 @@ export const DashBoard = () => {
                     >
                       <TableCell className="font-medium text-start whitespace-nowrap">
                         {dispositivo.nome}
+                      </TableCell>
+                      <TableCell className="font-medium text-start whitespace-nowrap">
+                        {dispositivo.local ?? "Local"}
                       </TableCell>
                       <TableCell>
                         {dispositivo.config[0].temperatura}C°

@@ -1,6 +1,6 @@
 import {
   ClimaProps,
-  FormProps,
+  ClimatizacaoProps,
   IRequestCreateDispositivo,
   IRequestUpdateDispositivoBody,
   IResponseGetDispositivoData,
@@ -8,8 +8,8 @@ import {
 } from "@/interfaces";
 import { toast } from "sonner";
 
-// const URL_BASE = import.meta.env.VITE_URL_BASE || "http://localhost:3000"; // Local
-const URL_BASE = import.meta.env.VITE_URL_BASE || "https://conforttemp-backend.onrender.com"; // Prod
+const URL_BASE = import.meta.env.VITE_URL_BASE || "http://localhost:3000"; // Local
+// const URL_BASE = import.meta.env.VITE_URL_BASE || "https://conforttemp-backend.onrender.com"; // Prod
 
 export async function login(
   email: string,
@@ -32,11 +32,11 @@ export async function login(
   }
 }
 
-export async function enviarDados(dados: FormProps): Promise<void> {
+export async function RequestClimatizador(dados: ClimatizacaoProps, id: number): Promise<void> {
   try {
     toast.loading("Enviando...");
-    const response = await fetch(`${URL_BASE}/api/dados`, {
-      method: "POST",
+    const response = await fetch(`${URL_BASE}/api/users/climatizacao/${id}`, {
+      method: "PUT",
       headers: {
         "Content-Type": "application/json",
       },
@@ -142,6 +142,27 @@ export async function RequestUpdateDispositivoData(
     });
     if (!response.ok) {
       throw new Error(`Erro atualizar dados: ${response.statusText}`);
+    }
+    return await response.json();
+  } catch (error) {
+    console.error("Erro:", error);
+  }
+}
+
+export async function RequestDisableClimatizador(
+  token: string,
+  idUser: number
+): Promise<void> {
+  try {
+    const response = await fetch(`${URL_BASE}/api/users/climatizacao/${idUser}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    if (!response.ok) {
+      throw new Error(`Erro ao desativar climatizador: ${response.statusText}`);
     }
     return await response.json();
   } catch (error) {
