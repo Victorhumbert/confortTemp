@@ -61,6 +61,7 @@ export interface DispositivoProps {
 export interface IRequestCreateDispositivo {
   userId: number;
   nome: string;
+  local: string;
 }
 
 export interface IResponseGetDispositivoData extends DispositivoProps {}

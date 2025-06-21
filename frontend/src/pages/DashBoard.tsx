@@ -1,4 +1,9 @@
-import { climaAtual, GetDispositivos, RequestCreateDispositivo } from "@/api";
+import {
+  climaAtual,
+  GetDispositivos,
+  RequestCreateDispositivo,
+  RequestDeleteDispositivo,
+} from "@/api";
 import { Header } from "@/components/Header";
 import { useEffect, useState } from "react";
 import {
@@ -23,7 +28,7 @@ import {
   HoverCardTrigger,
 } from "@/components/ui/hover-card";
 import { Link, Navigate } from "react-router-dom";
-import { RefreshCcw, Settings } from "lucide-react";
+import { RefreshCcw, Settings, Trash } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -116,13 +121,28 @@ export const DashBoard = () => {
     const idUser = +user.id;
     try {
       setIsSubmiting(true);
-      await RequestCreateDispositivo({ nome: data.nome, userId: idUser });
+      await RequestCreateDispositivo({ nome: data.nome, userId: idUser, local: data.local });
       requestDispositivos();
     } catch (error) {
       console.error("Erro ao criar dispositivo:", error);
     } finally {
       setIsSubmiting(false);
       setIsModalCreateDipositivoOpen(false);
+    }
+  }
+
+  async function handleDeleteDispositivo(id: number) {
+    try {
+      toast.loading("Deletando dispositivo...");
+      await RequestDeleteDispositivo(id);
+      toast.dismiss();
+      toast.success("Dispositivo deletado com sucesso!");
+    } catch (error) {
+      console.error("Erro ao deletar dispositivo:", error);
+      toast.error("Erro ao deletar dispositivo.");
+    } finally {
+      toast.success("Dispositivo deletado com sucesso!");
+      requestDispositivos();
     }
   }
 
@@ -185,7 +205,7 @@ export const DashBoard = () => {
                       <TableCell className="font-medium text-start whitespace-nowrap">
                         {dispositivo.nome}
                       </TableCell>
-                      <TableCell className="font-medium text-start whitespace-nowrap">
+                      <TableCell className="font-medium whitespace-nowrap">
                         {dispositivo.local ?? "Local"}
                       </TableCell>
                       <TableCell>
@@ -238,9 +258,12 @@ export const DashBoard = () => {
                             <Link
                               to={`/dispositivo/${dispositivo.id}`}
                               state={dispositivo}
-                              className="grid mx-auto rounded-full p-2 hover:bg-slate-200"
+                              className="grid m-auto rounded-full p-2 hover:bg-slate-200"
                             >
-                              <Settings className="text-primary rounded-full" />
+                              <Settings
+                                size={20}
+                                className="text-primary rounded-full"
+                              />
                             </Link>
                           </HoverCardTrigger>
                           <HoverCardContent className="p-2">
@@ -249,12 +272,33 @@ export const DashBoard = () => {
                             </div>
                           </HoverCardContent>
                         </HoverCard>
+                        <HoverCard>
+                          <HoverCardTrigger asChild>
+                            <Button
+                              onClick={() =>
+                                handleDeleteDispositivo(dispositivo.id)
+                              }
+                              variant="ghost"
+                              className="grid m-auto content-center rounded-full p-2 hover:bg-slate-200"
+                            >
+                              <Trash
+                                size={20}
+                                className="text-destructive rounded-full"
+                              />
+                            </Button>
+                          </HoverCardTrigger>
+                          <HoverCardContent className="p-2">
+                            <div className="text-center">
+                              Deletar dispositivo
+                            </div>
+                          </HoverCardContent>
+                        </HoverCard>
                       </TableCell>
                     </TableRow>
                   ))
                 ) : (
                   <TableRow className="text-center">
-                    <TableCell colSpan={6} className="text-center">
+                    <TableCell colSpan={7} className="text-center">
                       Nenhum dispositivo encontrado
                     </TableCell>
                   </TableRow>
@@ -294,7 +338,24 @@ export const DashBoard = () => {
                       <Input
                         type="text"
                         onChange={(e) => field.onChange(e.target.value)}
-                        placeholder="Nome do dispositivo"
+                        placeholder="Ex: Dispositivo 1, etc."
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                name="local"
+                control={createDispositivoForm.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Local do dispositivo</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="text"
+                        onChange={(e) => field.onChange(e.target.value)}
+                        placeholder="Ex: Sala, Quarto, Cozinha"
                       />
                     </FormControl>
                     <FormMessage />

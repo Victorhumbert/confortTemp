@@ -105,6 +105,24 @@ export async function RequestCreateDispositivo(
   }
 }
 
+export async function RequestDeleteDispositivo(
+  idDispositivo: number
+): Promise<void> {
+  try {
+    const response = await fetch(`${URL_BASE}/api/dispositivos/${idDispositivo}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    if (!response.ok) {
+      throw new Error(`Erro ao buscar dados: ${response.statusText}`);
+    }
+  } catch (error) {
+    console.error("Erro:", error);
+  }
+}
+
 export async function RequestGetDispositivoData(
   token: string,
   idDispositivo: number
