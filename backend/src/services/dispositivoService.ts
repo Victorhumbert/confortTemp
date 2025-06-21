@@ -3,20 +3,22 @@ import { prisma } from "../prismaClient";
 
 interface DispDTO {
   nome: string;
+  local: string;
   userId: number;
 }
 
-export async function createWithConfig({ nome, userId }: DispDTO) {
+export async function createWithConfig({ nome, local, userId }: DispDTO) {
   const dispositivo = await prisma.dispositivo
     .create({
       data: {
         nome,
+        local,
         userId,
+        ativo: 1, // Assuming 'ativo' is a boolean field indicating if the device is active
       },
       include: { config: true },
     })
     .then(async (dispositivo: any) => {
-      console.log("Dispositivo criado:", dispositivo);
       const teste = await prisma.config.create({
         data: {
           dispositivosId: dispositivo.id,
@@ -47,7 +49,7 @@ export function getDispositivo(id: number) {
 
 export function updateConfig(
   dispositivoId: number,
-  data: { temperaturaMin: number,temperaturaMax: number, motionMax: number   }
+  data: { temperaturaMin: number; temperaturaMax: number; motionMax: number }
 ) {
   return prisma.config.update({
     where: { dispositivosId: dispositivoId },
@@ -56,7 +58,7 @@ export function updateConfig(
 }
 
 export function removeDispositivo(id: number) {
-  return prisma.dispositivo.delete({ where: { id } });
+  return prisma.dispositivo.update({ where: { id }, data: { ativo: 0 } });
 }
 
 export function getByUserId(userId: number) {
