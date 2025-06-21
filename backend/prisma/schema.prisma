@@ -33,6 +33,7 @@ model Dispositivo {
   ativo     Int         @default(1)
   config    Config[]
   historico Historico[]
+  local     String?
 }
 
 model Config {
