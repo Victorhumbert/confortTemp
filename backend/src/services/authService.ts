@@ -29,10 +29,13 @@ export async function loginUser({ email, senha }: AuthDTO) {
   if (!user || !(await bcrypt.compare(senha, user.senha)))
     throw { status: 401, message: "Usuário ou senha inválidos" };
 
-  const token = jwt.sign({ id: user.id, email }, JWT_SECRET, {
-    expiresIn: "24h",
-  });
-  
+  const token = jwt.sign(
+    { id: user.id, email: user.email, username: user.username },
+    JWT_SECRET,
+    {
+      expiresIn: "24h",
+    }
+  );
   const { senha: _, ...userData } = user;
   return {
     status: 200,
