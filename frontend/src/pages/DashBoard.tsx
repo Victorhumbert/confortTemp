@@ -50,6 +50,7 @@ import BluetoothScanner from "@/components/BluetoothScanner";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { toast } from "sonner";
 import { useAuth } from "@/contexts/AuthContext";
+import LocationPermissionModal from "@/components/LocationPermissionModal";
 
 export const DashBoard = () => {
   const { user } = useAuth();
@@ -61,6 +62,8 @@ export const DashBoard = () => {
   const [isSubmiting, setIsSubmiting] = useState(false);
   const tempKelvin = 273.15;
   const createDispositivoForm = useForm<DispositivoProps>();
+  const [isLocationModalOpen, setIsLocationModalOpen] = useState(false);
+  const [isAcepptedLocation, setIsAcceptedLocation] = useState(false);
 
   async function requestDispositivos(refresh: boolean = false) {
     if (!user) {
@@ -92,26 +95,96 @@ export const DashBoard = () => {
   }, []);
 
   useEffect(() => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(success, error);
-    } else {
+    if (!navigator.geolocation) setIsLocationModalOpen(true);
+  }, [dispositivos]);
+
+  const handleLocationAccept = () => {
+    setIsLocationModalOpen(false);
+    setIsAcceptedLocation(true);
+
+    if (!navigator.geolocation) {
       alert("Geolocalização não é suportada pelo seu navegador.");
-    }
-    async function success(position: GeolocationPosition) {
-      const latitude = position.coords.latitude;
-      const longitude = position.coords.longitude;
-
-      // Chamar a API de clima com as coordenadas obtidas
-      const response = await climaAtual(latitude, longitude);
-
-      if (!response?.main) return;
-      setTemperatura(+(response.main.temp - tempKelvin).toFixed());
-      setBairroName(response.name);
+      return;
     }
 
-    function error() {
-      alert("Não foi possível obter a localização.");
-    }
+    const timeout = setTimeout(() => {
+      alert("Você não respondeu à solicitação de localização.");
+      setIsAcceptedLocation(false);
+      localStorage.removeItem("locationAccepted");
+    }, 10000); // 10 segundos
+
+    navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        clearTimeout(timeout); // limpa o timeout se a resposta chegou
+        const latitude = position.coords.latitude;
+        const longitude = position.coords.longitude;
+
+        const response = await climaAtual(latitude, longitude);
+        if (!response?.main) return;
+
+        setTemperatura(+(response.main.temp - tempKelvin).toFixed());
+        setBairroName(response.name);
+
+        // salva somente após permissão concedida com sucesso
+        localStorage.setItem("locationAccepted", "true");
+      },
+      (error) => {
+        clearTimeout(timeout);
+        setIsAcceptedLocation(false);
+        localStorage.removeItem("locationAccepted");
+
+        if (error.code === error.PERMISSION_DENIED) {
+          alert("Permissão de localização negada.");
+        } else {
+          alert("Erro ao obter localização.");
+        }
+      }
+    );
+  };
+
+  const handleLocationDecline = () => {
+    setIsAcceptedLocation(false);
+    setIsLocationModalOpen(false);
+    alert("Você recusou o acesso à localização.");
+  };
+
+  useEffect(() => {
+    const checkPermission = async () => {
+      const userAcceptedModal =
+        localStorage.getItem("locationAccepted") === "true";
+
+      if (!navigator.permissions || !navigator.geolocation) {
+        setIsLocationModalOpen(true);
+        return;
+      }
+
+      try {
+        const result = await navigator.permissions.query({
+          name: "geolocation",
+        });
+
+        if (result.state === "granted") {
+          setIsAcceptedLocation(true);
+          if (!userAcceptedModal) {
+            localStorage.setItem("locationAccepted", "true");
+          }
+        } else if (result.state === "prompt") {
+          if (!userAcceptedModal) {
+            setIsLocationModalOpen(true);
+          }
+        } else if (result.state === "denied") {
+          // Caso especial: usuário aceitou modal antes, mas removeu permissão no navegador
+          localStorage.removeItem("locationAccepted");
+          setIsAcceptedLocation(false);
+          setIsLocationModalOpen(true);
+        }
+      } catch (error) {
+        console.error("Erro ao checar permissão de geolocalização:", error);
+        setIsLocationModalOpen(true); // fallback
+      }
+    };
+
+    checkPermission();
   }, []);
 
   async function createDispositivo(data: DispositivoProps) {
@@ -121,7 +194,11 @@ export const DashBoard = () => {
     const idUser = +user.id;
     try {
       setIsSubmiting(true);
-      await RequestCreateDispositivo({ nome: data.nome, userId: idUser, local: data.local });
+      await RequestCreateDispositivo({
+        nome: data.nome,
+        userId: idUser,
+        local: data.local,
+      });
       requestDispositivos();
     } catch (error) {
       console.error("Erro ao criar dispositivo:", error);
@@ -153,17 +230,34 @@ export const DashBoard = () => {
         Seja bem vindo, {user?.username}!
       </h1>
 
-      <div className="grid justify-center">
-        <div className="text-8xl text-center h-64 w-64 grid justify-center content-center rounded-full border">
-          <span className="text-2xl text-orange-300">
-            {bairroName || "Procurando..."}
-          </span>
-          <h1 className="text-primary relative">
-            {temperatura} <span className="text-2xl absolute bottom-0">°C</span>
-          </h1>
+      {isAcepptedLocation ? (
+        <div className="grid justify-center">
+          <div className="text-8xl text-center h-64 w-64 grid justify-center content-center rounded-full border">
+            <span className="text-2xl text-orange-300">
+              {bairroName || "Procurando..."}
+            </span>
+            <h1 className="text-primary relative">
+              {temperatura}{" "}
+              <span className="text-2xl absolute bottom-0">°C</span>
+            </h1>
+          </div>
         </div>
-      </div>
+      ) : (
+        <Button
+          variant="outline"
+          onClick={() => setIsLocationModalOpen(true)}
+          className="grid hover:bg-muted text-2xl mx-auto text-center h-64 w-64 rounded-full border"
+        >
+          Permitir localização
+        </Button>
+      )}
+
       <MudarTemperatura />
+      <LocationPermissionModal
+        onDecline={handleLocationDecline}
+        onAccept={handleLocationAccept}
+        isOpen={isLocationModalOpen}
+      />
 
       <div className="grid sm:mx-auto sm:w-3/4">
         <div className="grid justify-self-end rounded-full p-2 hover:bg-slate-200 cursor-pointer">

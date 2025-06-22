@@ -21,12 +21,25 @@ const emailSchema = z.object({
   email: z.string().email("Digite um e-mail válido"),
 });
 
-const passwordSchema = z.object({
-  password: z.string().min(6, "A senha deve ter pelo menos 6 caracteres"),
-});
+const passwordSchema = z
+  .object({
+    newPassword: z.string().min(6, "A senha deve ter pelo menos 6 caracteres"),
+    confirmPassword: z.string(),
+  })
+  .refine(
+    (data) => {
+      return data.newPassword === data.confirmPassword;
+    },
+    {
+      message: "As senhas não coincidem",
+      params: {
+        confirmPassword: "confirmPassword",
+      },
+      path: ["confirmPassword"],
+    }
+  );
 
 export const SettingsPage = () => {
-
   // Formulário para Atualizar E-mail
   const emailForm = useForm({
     resolver: zodResolver(emailSchema),
@@ -39,7 +52,8 @@ export const SettingsPage = () => {
   const passwordForm = useForm({
     resolver: zodResolver(passwordSchema),
     defaultValues: {
-      password: "",
+      newPassword: "",
+      confirmPassword: "",
     },
   });
 
@@ -52,23 +66,21 @@ export const SettingsPage = () => {
 
   const onSubmitPassword = (data: z.infer<typeof passwordSchema>) => {
     // Simular atualização de senha
-    console.log("Atualizar Senha para:", data.password);
+    console.log("Atualizar Senha para:", data);
     toast.success("Senha atualizada com sucesso!");
   };
 
   return (
     <div className="min-h-screen bg-gray-50">
       <Header />
-      <h1 className="text-3xl text-center my-6 text-yellow-800">
-        Configurações
-      </h1>
+      <h1 className="text-3xl text-center my-12">Configurações</h1>
 
       <div className="grid mx-auto p-4 gap-4">
         {/* Formulário para Atualizar E-mail */}
         <Form {...emailForm}>
           <form
             onSubmit={emailForm.handleSubmit(onSubmitEmail)}
-            className="bg-white p-6 rounded shadow"
+            className="bg-white p-6 rounded shadow mx-auto w-3/4"
           >
             <h2 className="text-2xl mb-4">Atualizar E-mail</h2>
             <FormField
@@ -76,7 +88,7 @@ export const SettingsPage = () => {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel htmlFor="email">Novo E-mail</FormLabel>
+                  <FormLabel htmlFor="email">E-mail</FormLabel>
                   <FormControl>
                     <Input
                       id="email"
@@ -98,27 +110,51 @@ export const SettingsPage = () => {
         <Form {...passwordForm}>
           <form
             onSubmit={passwordForm.handleSubmit(onSubmitPassword)}
-            className="bg-white p-6 rounded shadow"
+            className="bg-white p-6 rounded shadow mx-auto w-3/4"
           >
             <h2 className="text-2xl mb-4">Atualizar Senha</h2>
-            <FormField
-              control={passwordForm.control}
-              name="password"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel htmlFor="password">Nova Senha</FormLabel>
-                  <FormControl>
-                    <Input
-                      id="password"
-                      type="password"
-                      placeholder="Digite sua nova senha"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            <div className="flex gap-2">
+              <FormField
+                control={passwordForm.control}
+                name="newPassword"
+                render={({ field }) => (
+                  <FormItem className="flex-1">
+                    <FormLabel htmlFor="newPassword">Nova Senha</FormLabel>
+                    <FormControl>
+                      <Input
+                        autoComplete="new-password"
+                        id="newPassword"
+                        type="password"
+                        placeholder="Sua nova senha"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={passwordForm.control}
+                name="confirmPassword"
+                render={({ field }) => (
+                  <FormItem className="flex-1">
+                    <FormLabel htmlFor="confirmPassword">
+                      Confirme a nova senha
+                    </FormLabel>
+                    <FormControl>
+                      <Input
+                        autoComplete="new-password"
+                        id="confirmPassword"
+                        type="password"
+                        placeholder="Sua nova senha"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
             <Button type="submit" className="mt-4">
               Salvar Senha
             </Button>
