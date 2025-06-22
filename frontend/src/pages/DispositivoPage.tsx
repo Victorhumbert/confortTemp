@@ -1,5 +1,6 @@
 import { RequestGetDispositivoData, RequestUpdateDispositivoData } from "@/api";
 import { Header } from "@/components/Header";
+import { LoadingComponent } from "@/components/LoadingComponent";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -175,11 +176,7 @@ export const DispositivosPage = () => {
     <div className="flex flex-col w-screen h-screen">
       <Header />
       {isLoading ? (
-        <div className="flex m-auto p-4 rounded-lg shadow">
-          <h1 className="text-2xl text-center my-12">
-            Carregando configurações do dispositivo...
-          </h1>
-        </div>
+        <LoadingComponent text="Carregando configurações do dispositivo..." />
       ) : (
         <>
           <h1 className="text-3xl text-center my-12">
