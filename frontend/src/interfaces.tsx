@@ -72,3 +72,9 @@ export interface IRequestUpdateDispositivoBody {
   temperaturaMax?: number;
   motionMax?: number;
 }
+
+export interface IRequestUpdateUserBody {
+  username?: string;
+  email?: string;
+  password?: string;
+}

@@ -20,6 +20,7 @@ interface User {
 
 interface AuthContextData {
   user: User | null;
+  setUser: React.Dispatch<React.SetStateAction<User | null>>;
   signin(email: string, password: string): Promise<void>;
   signout(): void;
   loading: boolean;
@@ -100,7 +101,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, signin, signout, loading }}>
+    <AuthContext.Provider value={{ user, setUser, signin, signout, loading }}>
       {children}
     </AuthContext.Provider>
   );

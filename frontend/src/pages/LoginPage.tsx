@@ -12,7 +12,6 @@ import { Lock, User } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import Banner from "@/assets/banner2.webp";
 import Logo from "@/assets/logo_ComFortTemp.svg?react";
-import { login } from "@/api";
 import { toast } from "sonner";
 import { LoginProps, ResponseLogin } from "@/interfaces";
 import { useAuth } from "@/contexts/AuthContext";
@@ -26,9 +25,9 @@ export const LoginPage = () => {
     try {
       await signin(data.email, data.senha);
       navigation('/dashboard');
-    } catch (error: any) {
+    } catch (error) {
       console.error('Erro ao fazer login:', error);
-      toast.error(error.message || 'Usuário ou senha inválidos!');
+      toast.error('Usuário ou senha inválidos!');
     }
   };
 

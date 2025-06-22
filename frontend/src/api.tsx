@@ -3,7 +3,9 @@ import {
   ClimatizacaoProps,
   IRequestCreateDispositivo,
   IRequestUpdateDispositivoBody,
+  IRequestUpdateUserBody,
   IResponseGetDispositivoData,
+  IUser,
   ResponseLogin,
 } from "@/interfaces";
 import { toast } from "sonner";
@@ -32,7 +34,10 @@ export async function login(
   }
 }
 
-export async function RequestClimatizador(dados: ClimatizacaoProps, id: number): Promise<void> {
+export async function RequestClimatizador(
+  dados: ClimatizacaoProps,
+  id: number
+): Promise<void> {
   try {
     toast.loading("Enviando...");
     const response = await fetch(`${URL_BASE}/api/users/climatizacao/${id}`, {
@@ -51,6 +56,23 @@ export async function RequestClimatizador(dados: ClimatizacaoProps, id: number):
     console.error(error);
   } finally {
     toast.dismiss();
+  }
+}
+
+export async function RequestGetUserBydId(id: number): Promise<IUser | void> {
+  try {
+    const response = await fetch(`${URL_BASE}/api/users/${id}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    if (!response.ok) {
+      throw new Error(`Erro ao buscar dados: ${response.statusText}`);
+    }
+    return await response.json();
+  } catch (error) {
+    console.error("Erro:", error);
   }
 }
 
@@ -109,12 +131,15 @@ export async function RequestDeleteDispositivo(
   idDispositivo: number
 ): Promise<void> {
   try {
-    const response = await fetch(`${URL_BASE}/api/dispositivos/${idDispositivo}`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    const response = await fetch(
+      `${URL_BASE}/api/dispositivos/${idDispositivo}`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
     if (!response.ok) {
       throw new Error(`Erro ao buscar dados: ${response.statusText}`);
     }
@@ -128,13 +153,16 @@ export async function RequestGetDispositivoData(
   idDispositivo: number
 ): Promise<IResponseGetDispositivoData | void> {
   try {
-    const response = await fetch(`${URL_BASE}/api/dispositivos/${idDispositivo}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const response = await fetch(
+      `${URL_BASE}/api/dispositivos/${idDispositivo}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
     if (!response.ok) {
       throw new Error(`Erro ao buscar dados: ${response.statusText}`);
     }
@@ -150,14 +178,17 @@ export async function RequestUpdateDispositivoData(
   data: IRequestUpdateDispositivoBody
 ): Promise<IResponseGetDispositivoData | void> {
   try {
-    const response = await fetch(`${URL_BASE}/api/dispositivos/${idDispositivo}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(data),
-    });
+    const response = await fetch(
+      `${URL_BASE}/api/dispositivos/${idDispositivo}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(data),
+      }
+    );
     if (!response.ok) {
       throw new Error(`Erro atualizar dados: ${response.statusText}`);
     }
@@ -172,18 +203,48 @@ export async function RequestDisableClimatizador(
   idUser: number
 ): Promise<void> {
   try {
-    const response = await fetch(`${URL_BASE}/api/users/climatizacao/${idUser}`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const response = await fetch(
+      `${URL_BASE}/api/users/climatizacao/${idUser}`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
     if (!response.ok) {
       throw new Error(`Erro ao desativar climatizador: ${response.statusText}`);
     }
     return await response.json();
   } catch (error) {
     console.error("Erro:", error);
+  }
+}
+
+export async function RequestUpdateUserData(
+  token: string,
+  id: number,
+  data: IRequestUpdateUserBody
+): Promise<IUser | void> {
+  try {
+    toast.loading("Enviando...");
+    const response = await fetch(`${URL_BASE}/api/users/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(data),
+    });
+    toast.dismiss();
+    toast.success("Dados enviados!");
+    return await response.json();
+  } catch (error) {
+    toast.dismiss();
+    toast.error(`Erro ao enviar dados:${error}`);
+    console.error(error);
+  } finally {
+    toast.dismiss();
   }
 }
