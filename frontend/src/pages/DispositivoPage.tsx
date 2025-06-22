@@ -175,7 +175,7 @@ export const DispositivosPage = () => {
     <div className="flex flex-col w-screen h-screen">
       <Header />
       {isLoading ? (
-        <div className="flex m-auto p-4 rounded-lg shadow-[0px_0px_8px_1px] shadow-primary/30">
+        <div className="flex m-auto p-4 rounded-lg shadow">
           <h1 className="text-2xl text-center my-12">
             Carregando configurações do dispositivo...
           </h1>
@@ -191,7 +191,7 @@ export const DispositivosPage = () => {
             <Form {...updateDeviceForm}>
               <form
                 onSubmit={updateDeviceForm.handleSubmit(onSubmitUpdateDevice)}
-                className="bg-white p-6 rounded shadow-[0px_0px_10px_1px_#0001] mx-auto w-3/4"
+                className="bg-white p-6 rounded shadow mx-auto w-3/4"
               >
                 {/* Limites de Temperatura */}
                 <div className="mb-6">
@@ -226,7 +226,7 @@ export const DispositivosPage = () => {
             <Form {...limitsForm}>
               <form
                 onSubmit={limitsForm.handleSubmit(onSubmitLimits)}
-                className="bg-white p-6 rounded shadow-[0px_0px_10px_1px_#0001] mx-auto w-3/4"
+                className="bg-white p-6 rounded shadow mx-auto w-3/4"
               >
                 {/* Limites de Temperatura */}
                 <div className="mb-6">
