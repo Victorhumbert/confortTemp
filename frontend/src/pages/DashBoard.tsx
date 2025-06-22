@@ -164,7 +164,7 @@ export const DashBoard = () => {
         });
 
         if (result.state === "granted") {
-          setIsAcceptedLocation(true);
+          handleLocationAccept();
           if (!userAcceptedModal) {
             localStorage.setItem("locationAccepted", "true");
           }
