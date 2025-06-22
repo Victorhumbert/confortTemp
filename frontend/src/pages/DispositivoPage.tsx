@@ -27,9 +27,18 @@ export const DispositivosPage = () => {
   );
 
   const limitsSchema = z.object({
-    temperaturaMin: z.coerce.number(),
-    temperaturaMax: z.coerce.number(),
-    motionMax: z.coerce.number(),
+    temperaturaMin: z.coerce
+      .number()
+      .min(18, { message: "A temperatura deve ser entre 18 e 30" })
+      .max(30, { message: "A temperatura deve ser entre 18 e 30" }),
+    temperaturaMax: z.coerce
+      .number()
+      .min(18, { message: "A temperatura deve ser entre 18 e 30" })
+      .max(30, { message: "A temperatura deve ser entre 18 e 30" }),
+    motionMax: z.coerce
+      .number()
+      .min(0, { message: "A distância deve ser entre 0 e 10 metros" })
+      .max(10, { message: "A distância deve ser entre 0 e 10 metros" }),
   });
 
   useEffect(() => {
@@ -106,7 +115,7 @@ export const DispositivosPage = () => {
     <div className="w-screen h-screen">
       <Header />
       <h1 className="text-3xl text-center my-12">
-        Configuracoes do disposivo: {dispositivo.nome}!
+        Configurações do disposivo: {dispositivo.nome}!
       </h1>
 
       {/* Formulário para Configurar Limites */}
@@ -117,19 +126,23 @@ export const DispositivosPage = () => {
         >
           {/* Limites de Temperatura */}
           <div className="mb-6">
-            <h3 className="text-xl mb-2">Mudar Limite de Temperatura</h3>
+            <h3 className="text-xl mb-2">Mudar limites</h3>
             <div className="flex space-x-4">
               <FormField
                 control={limitsForm.control}
                 name="temperaturaMin"
                 render={({ field }) => (
                   <FormItem className="flex-1">
-                    <FormLabel htmlFor="temperaturaMin">Min</FormLabel>
+                    <FormLabel htmlFor="temperaturaMin">
+                      Min. temperatura
+                    </FormLabel>
                     <FormControl>
                       <Input
                         id="temperaturaMin"
                         type="number"
                         placeholder="Mínimo"
+                        min={18}
+                        max={30}
                         {...field}
                       />
                     </FormControl>
@@ -142,12 +155,16 @@ export const DispositivosPage = () => {
                 name="temperaturaMax"
                 render={({ field }) => (
                   <FormItem className="flex-1">
-                    <FormLabel htmlFor="temperaturaMax">Max</FormLabel>
+                    <FormLabel htmlFor="temperaturaMax">
+                      Max. temperatura
+                    </FormLabel>
                     <FormControl>
                       <Input
                         id="temperaturaMax"
                         type="number"
                         placeholder="Máximo"
+                        min={18}
+                        max={30}
                         {...field}
                       />
                     </FormControl>
@@ -172,6 +189,8 @@ export const DispositivosPage = () => {
                     id="motionMax"
                     type="number"
                     placeholder="Máximo"
+                    min={0}
+                    max={10}
                     {...field}
                   />
                 </FormControl>
