@@ -66,7 +66,7 @@ export const DispositivosPage = () => {
     },
   });
 
-  const onSubmitLimits = ({
+  const onSubmitLimits = async ({
     temperaturaMin,
     temperaturaMax,
     motionMax,
@@ -77,7 +77,7 @@ export const DispositivosPage = () => {
     }
     try {
       toast.loading("Atualizando limites do dispositivo...");
-      const response = RequestUpdateDispositivoData(
+      const response = await RequestUpdateDispositivoData(
         user?.token,
         dispositivo.id,
         {
