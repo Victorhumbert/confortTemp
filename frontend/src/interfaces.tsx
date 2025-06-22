@@ -67,7 +67,8 @@ export interface IRequestCreateDispositivo {
 export interface IResponseGetDispositivoData extends DispositivoProps {}
 
 export interface IRequestUpdateDispositivoBody {
-  temperaturaMin: number;
-  temperaturaMax: number;
-  motionMax: number;
+  nome?: string;
+  temperaturaMin?: number;
+  temperaturaMax?: number;
+  motionMax?: number;
 }

@@ -47,14 +47,29 @@ export function getDispositivo(id: number) {
   });
 }
 
-export function updateConfig(
+export async function updateConfig(
   dispositivoId: number,
-  data: { temperaturaMin: number; temperaturaMax: number; motionMax: number }
+  data: {
+    temperaturaMin: number;
+    temperaturaMax: number;
+    motionMax: number;
+    nome: string;
+  }
 ) {
-  return prisma.config.update({
-    where: { dispositivosId: dispositivoId },
-    data: { ...data, updatedAt: new Date() },
-  });
+  if (data.nome) {
+    const nomeAtualizado = await prisma.dispositivo.update({
+      where: { id: dispositivoId },
+      data: { ...data },
+    });
+    return nomeAtualizado;
+  }
+  if (data.temperaturaMax || data.temperaturaMin || data.motionMax) {
+    const configAtualizada = await prisma.config.update({
+      where: { dispositivosId: dispositivoId },
+      data: { ...data, updatedAt: new Date() },
+    });
+    return configAtualizada;
+  }
 }
 
 export function removeDispositivo(id: number) {
