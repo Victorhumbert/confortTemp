@@ -19,22 +19,22 @@ import { useAuth } from "@/contexts/AuthContext";
 export const LoginPage = () => {
   const navigation = useNavigate();
   const loginForm = useForm<LoginProps>();
-  const {signin} = useAuth();
+  const { signin } = useAuth();
 
-    const handleLogin: SubmitHandler<LoginProps> = async (data) => {
+  const handleLogin: SubmitHandler<LoginProps> = async (data) => {
     try {
       await signin(data.email, data.password);
-      navigation('/dashboard');
+      navigation("/dashboard");
     } catch (error) {
-      console.error('Erro ao fazer login:', error);
-      toast.error('Usuário ou senha inválidos!');
+      console.error("Erro ao fazer login:", error);
+      toast.error("Usuário ou senha inválidos!");
     }
   };
 
   return (
-    <div className="flex justify-between">
-      <div className="bg-background border-r h-screen justify-self-start p-24 content-center">
-        <Logo className="mx-auto w-64 h-64" />
+    <div className="sm:flex justify-between max-w-full">
+      <div className="bg-background/80 sm:bg-background border-r max-w-full absolute z-10 bottom-1/4 left-5 right-5 rounded-md sm:translate-x-0 sm:translate-y-0 sm:static sm:rounded-none sm:h-screen p-12 sm:p-24 content-center">
+        <Logo className="mx-auto w-32 h-32 sm:w-64 sm:h-64 max-w-max" />
         <Form {...loginForm}>
           <form
             onSubmit={loginForm.handleSubmit(handleLogin)}
@@ -90,7 +90,11 @@ export const LoginPage = () => {
         </Form>
       </div>
       <div>
-        <img src={Banner} alt="banner" className="object-cover h-full" />
+        <img
+          src={Banner}
+          alt="banner"
+          className="object-cover absolute top-0 sm:static h-full"
+        />
       </div>
     </div>
   );

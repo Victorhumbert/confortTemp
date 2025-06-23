@@ -29,7 +29,7 @@ import {
 import { toast } from "sonner";
 import { useAuth } from "@/contexts/AuthContext";
 
-export const MudarTemperatura = () => {
+export const Climatizador = () => {
   const { user } = useAuth();
   const FormTemp = useForm({
     defaultValues: {
@@ -47,7 +47,6 @@ export const MudarTemperatura = () => {
     try {
       toast.loading("Enviando dados...");
       const response = await RequestClimatizador({ climatizacao }, +user.id);
-      console.log(response);
       toast.dismiss();
       toast.success("Dados enviados!");
     } catch (error) {
@@ -67,7 +66,6 @@ export const MudarTemperatura = () => {
     try {
       toast.loading("Desativando climatizador...");
       const response = await RequestDisableClimatizador(user?.token, +user.id);
-      console.log(response);
       toast.dismiss();
       toast.success("Climatizador desativado!");
     } catch (error) {

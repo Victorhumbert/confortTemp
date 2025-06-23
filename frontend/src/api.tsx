@@ -11,8 +11,8 @@ import {
 } from "@/interfaces";
 import { toast } from "sonner";
 
-const URL_BASE = import.meta.env.VITE_URL_BASE || "http://localhost:3000"; // Local
-// const URL_BASE = import.meta.env.VITE_URL_BASE || "https://conforttemp-backend.onrender.com"; // Prod
+// const URL_BASE = import.meta.env.VITE_URL_BASE || "http://localhost:3000"; // Local
+const URL_BASE = import.meta.env.VITE_URL_BASE || "https://conforttemp-backend.onrender.com"; // Prod
 
 export async function login(
   email: string,
@@ -151,7 +151,6 @@ export async function RequestCreateDispositivo(
       },
       body: JSON.stringify(data),
     });
-    console.log(data);
     if (!response.ok) {
       throw new Error(`Erro ao buscar dados: ${response.statusText}`);
     }

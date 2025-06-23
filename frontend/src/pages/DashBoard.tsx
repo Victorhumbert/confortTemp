@@ -11,7 +11,7 @@ import {
   IRequestCreateDispositivo,
   IUser,
 } from "@/interfaces";
-import { MudarTemperatura } from "@/components/MudarTemperatura";
+import { Climatizador } from "@/components/Climatizador";
 import {
   Table,
   TableBody,
@@ -30,69 +30,21 @@ import {
 import { Link, Navigate } from "react-router-dom";
 import { RefreshCcw, Settings, Trash } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { useForm } from "react-hook-form";
-import { Input } from "@/components/ui/input";
-import BluetoothScanner from "@/components/BluetoothScanner";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { toast } from "sonner";
 import { useAuth } from "@/contexts/AuthContext";
 import LocationPermissionModal from "@/components/LocationPermissionModal";
+import { AdicionarDispositivoBtn } from "@/components/AdicionarDispositivo";
+import { useDispositivo } from "@/contexts/DispositivoContext";
 
 export const DashBoard = () => {
   const { user } = useAuth();
+  const { dispositivos, requestDispositivos } = useDispositivo();
   const [bairroName, setBairroName] = useState("");
   const [temperatura, setTemperatura] = useState(0);
-  const [dispositivos, setDispositivos] = useState<DispositivoProps[]>([]);
-  const [isModalCreateDipositivoOpen, setIsModalCreateDipositivoOpen] =
-    useState(false);
-  const [isSubmiting, setIsSubmiting] = useState(false);
   const tempKelvin = 273.15;
-  const createDispositivoForm = useForm<DispositivoProps>();
   const [isLocationModalOpen, setIsLocationModalOpen] = useState(false);
   const [isAcepptedLocation, setIsAcceptedLocation] = useState(false);
-
-  async function requestDispositivos(refresh: boolean = false) {
-    if (!user) {
-      return <Navigate to="/login" replace />;
-    }
-    const idUser = user.id;
-    try {
-      toast.loading(
-        refresh ? "Recarregar dados..." : "Buscando dispositivos..."
-      );
-      const dispositivos = await GetDispositivos(Number(idUser));
-      if (!dispositivos) return;
-      setDispositivos(dispositivos);
-      toast.dismiss();
-      toast.success(
-        refresh ? "Dados recarregados" : "Dispositivos encontrados!"
-      );
-      return dispositivos;
-    } catch (error) {
-      toast.dismiss();
-      toast.error(
-        refresh ? "Erro ao recarregar dados" : "Erro ao buscar dispositivos."
-      );
-      console.error("Erro ao buscar dispositivos:", error);
-    }
-  }
-  useEffect(() => {
-    requestDispositivos();
-  }, []);
 
   useEffect(() => {
     if (!navigator.geolocation) setIsLocationModalOpen(true);
@@ -187,27 +139,6 @@ export const DashBoard = () => {
     checkPermission();
   }, []);
 
-  async function createDispositivo(data: DispositivoProps) {
-    if (!user) {
-      return <Navigate to="/login" replace />;
-    }
-    const idUser = +user.id;
-    try {
-      setIsSubmiting(true);
-      await RequestCreateDispositivo({
-        nome: data.nome,
-        userId: idUser,
-        local: data.local,
-      });
-      requestDispositivos();
-    } catch (error) {
-      console.error("Erro ao criar dispositivo:", error);
-    } finally {
-      setIsSubmiting(false);
-      setIsModalCreateDipositivoOpen(false);
-    }
-  }
-
   async function handleDeleteDispositivo(id: number) {
     try {
       toast.loading("Deletando dispositivo...");
@@ -226,13 +157,13 @@ export const DashBoard = () => {
   return (
     <div className="w-screen h-screen">
       <Header />
-      <h1 className="text-3xl text-center my-12">
+      <h1 className="text-2xl sm:text-3xl text-center my-12">
         Seja bem vindo, {user?.username}!
       </h1>
 
       {isAcepptedLocation ? (
         <div className="grid justify-center">
-          <div className="text-8xl text-center h-64 w-64 grid justify-center content-center rounded-full border">
+          <div className="text-6xl sm:text-8xl text-center h-48 w-48 sm:h-64 sm:w-64 grid justify-center content-center rounded-full border">
             <span className="text-2xl text-orange-300">
               {bairroName || "Procurando..."}
             </span>
@@ -252,7 +183,7 @@ export const DashBoard = () => {
         </Button>
       )}
 
-      <MudarTemperatura />
+      <Climatizador />
       <LocationPermissionModal
         onDecline={handleLocationDecline}
         onAccept={handleLocationAccept}
@@ -401,69 +332,9 @@ export const DashBoard = () => {
             </Table>
             <ScrollBar orientation="horizontal" />
           </ScrollArea>
-          <Button
-            onClick={() => setIsModalCreateDipositivoOpen(true)}
-            className="w-full mt-2"
-          >
-            Adicionar dispositivo
-          </Button>
+          <AdicionarDispositivoBtn />
         </div>
       </div>
-
-      <Dialog
-        open={isModalCreateDipositivoOpen}
-        onOpenChange={setIsModalCreateDipositivoOpen}
-      >
-        <DialogContent aria-describedby={undefined}>
-          <DialogHeader>
-            <DialogTitle>Adicionar dispositivo</DialogTitle>
-          </DialogHeader>
-          <Form {...createDispositivoForm}>
-            <form
-              onSubmit={createDispositivoForm.handleSubmit(createDispositivo)}
-            >
-              <FormField
-                name="nome"
-                control={createDispositivoForm.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Nome do dispositivo</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="text"
-                        onChange={(e) => field.onChange(e.target.value)}
-                        placeholder="Ex: Dispositivo 1, etc."
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                name="local"
-                control={createDispositivoForm.control}
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Local do dispositivo</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="text"
-                        onChange={(e) => field.onChange(e.target.value)}
-                        placeholder="Ex: Sala, Quarto, Cozinha"
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <Button disabled={isSubmiting} className="w-full mt-2">
-                {isSubmiting ? "Adicionando" : "Adicionar"}
-              </Button>
-            </form>
-          </Form>
-        </DialogContent>
-      </Dialog>
     </div>
   );
 };

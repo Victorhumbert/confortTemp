@@ -68,7 +68,7 @@ export const RegisterUserPage = () => {
       <Form {...registerUserForm}>
         <form
           onSubmit={registerUserForm.handleSubmit(onSubmitUser)}
-          className="w-1/2 mx-auto"
+          className="mx-4 sm:w-1/2 sm:mx-auto"
         >
           <FormField
             name="username"
@@ -106,7 +106,7 @@ export const RegisterUserPage = () => {
               </FormItem>
             )}
           />
-          <div className="flex gap-2">
+          <div className="flex gap-2 max-[320px]:grid">
             <FormField
               name="password"
               control={registerUserForm.control}

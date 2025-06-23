@@ -7,6 +7,7 @@ import { ThemeProvider } from "@/components/ThemeProvider";
 import { DispositivosPage } from "./pages/DispositivoPage";
 import { useAuth } from "./contexts/AuthContext";
 import { RegisterUserPage } from "./pages/RegisterUserPage";
+import { DispositivoProvider } from "./contexts/DispositivoContext";
 
 export default function App() {
   function PrivateRoute({ children }: { children: JSX.Element }) {
@@ -29,7 +30,9 @@ export default function App() {
           path="/dashboard"
           element={
             <PrivateRoute>
-              <DashBoard />
+              <DispositivoProvider>
+                <DashBoard />
+              </DispositivoProvider>
             </PrivateRoute>
           }
         />

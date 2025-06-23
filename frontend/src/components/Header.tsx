@@ -12,8 +12,8 @@ export const Header = () => {
         className="flex items-center gap-1 cursor-pointer"
         onClick={() => navigate("/dashboard/")}
       >
-        <Logo className="w-10 h-10 p-2" />
-        <h1 className="text-2xl text-primary">ConfortTemp</h1>
+        <Logo className="flex-1 w-10 h-10 p-2 grid max-[320px]:hidden" />
+        <h1 className="text-xl sm:text-2xl text-primary">ConfortTemp</h1>
       </div>
       <div className="flex ml-auto items-center justify-self-end justify-end justify-items-end">
         {Number(user?.id) === 1 && (
