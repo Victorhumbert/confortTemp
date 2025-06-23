@@ -6,6 +6,7 @@ import {
   IRequestUpdateUserBody,
   IResponseGetDispositivoData,
   IUser,
+  RegisterUserProps,
   ResponseLogin,
 } from "@/interfaces";
 import { toast } from "sonner";
@@ -15,7 +16,7 @@ const URL_BASE = import.meta.env.VITE_URL_BASE || "http://localhost:3000"; // Lo
 
 export async function login(
   email: string,
-  senha: string
+  password: string
 ): Promise<ResponseLogin> {
   try {
     toast.loading("Logando...");
@@ -24,11 +25,43 @@ export async function login(
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ email, senha }),
+      body: JSON.stringify({ email, password }),
     });
     toast.dismiss();
     toast.success("Login realizado com sucesso!");
     return await response.json();
+  } catch (error) {
+    toast.dismiss();
+    toast.error(`Erro ao fazer login: ${error}`);
+    console.error(error);
+    throw error; // Re-throw the error to handle it in the calling function
+  } finally {
+    toast.dismiss();
+  }
+}
+
+export async function RequestRegisterUser(
+  token: string,
+  data: RegisterUserProps
+): Promise<void> {
+  try {
+    toast.loading("Cadastrando usuário...");
+    const response = await fetch(`${URL_BASE}/api/cadastrar`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(data),
+    });
+    toast.dismiss();
+    toast.success(`Usuário ${data.username.split(' ')[0]} cadastrado com sucesso!`);
+    return await response.json();
+  } catch (error) {
+    toast.dismiss();
+    toast.error(`Erro ao cadastrar usuário: ${error}`);
+    console.error(error);
+    throw error; // Re-throw the error to handle it in the calling function
   } finally {
     toast.dismiss();
   }

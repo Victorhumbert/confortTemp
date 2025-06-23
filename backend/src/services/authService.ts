@@ -8,14 +8,14 @@ const JWT_SECRET = process.env.JWT_SECRET!;
 interface AuthDTO {
   username?: string;
   email: string;
-  senha: string;
+  password: string;
 }
 
-export async function registerUser({ username, email, senha }: AuthDTO) {
+export async function registerUser({ username, email, password }: AuthDTO) {
   if (await prisma.user.findFirst({ where: { email } }))
     throw { status: 409, message: "E-mail já cadastrado" };
 
-  const hash = await bcrypt.hash(senha, 10);
+  const hash = await bcrypt.hash(password, 10);
   const user = await prisma.user.create({
     data: { username, email, senha: hash },
   });
@@ -23,10 +23,10 @@ export async function registerUser({ username, email, senha }: AuthDTO) {
   return { status: 201, message: "Usuário criado com sucesso", user: userData };
 }
 
-export async function loginUser({ email, senha }: AuthDTO) {
+export async function loginUser({ email, password }: AuthDTO) {
   const user = await prisma.user.findFirst({ where: { email } });
 
-  if (!user || !(await bcrypt.compare(senha, user.senha)))
+  if (!user || !(await bcrypt.compare(password, user.senha)))
     throw { status: 401, message: "Usuário ou senha inválidos" };
 
   const token = jwt.sign(

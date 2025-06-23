@@ -23,7 +23,7 @@ export const LoginPage = () => {
 
     const handleLogin: SubmitHandler<LoginProps> = async (data) => {
     try {
-      await signin(data.email, data.senha);
+      await signin(data.email, data.password);
       navigation('/dashboard');
     } catch (error) {
       console.error('Erro ao fazer login:', error);
@@ -62,19 +62,19 @@ export const LoginPage = () => {
               )}
             />
             <FormField
-              name="senha"
+              name="password"
               control={loginForm.control}
               render={() => (
                 <FormItem>
-                  <FormLabel htmlFor="senha">Senha</FormLabel>
+                  <FormLabel htmlFor="password">Senha</FormLabel>
                   <div className="relative">
                     <Lock className="text-primary absolute z-10 right-full top-1/2 -translate-y-1/2" />
                     <FormControl>
                       <Input
                         type="password"
-                        id="senha"
+                        id="password"
                         placeholder="Sua senha"
-                        {...loginForm.register("senha", {
+                        {...loginForm.register("password", {
                           required: true,
                         })}
                       />

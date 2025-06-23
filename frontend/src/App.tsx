@@ -6,6 +6,7 @@ import { Toaster } from "sonner";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { DispositivosPage } from "./pages/DispositivoPage";
 import { useAuth } from "./contexts/AuthContext";
+import { RegisterUserPage } from "./pages/RegisterUserPage";
 
 export default function App() {
   function PrivateRoute({ children }: { children: JSX.Element }) {
@@ -46,6 +47,14 @@ export default function App() {
           element={
             <PrivateRoute>
               <DispositivosPage />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/cadastro"
+          element={
+            <PrivateRoute>
+              <RegisterUserPage />
             </PrivateRoute>
           }
         />
