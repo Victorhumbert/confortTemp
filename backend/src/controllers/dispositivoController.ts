@@ -19,6 +19,7 @@ export async function listDispositivos(_req: Request, res: Response) {
 
 export async function getDispositivoById(req: Request, res: Response) {
   const disp = await svc.getDispositivo(+req.params.id);
+  console.log(disp)
   if (!disp) res.status(404).json({ error: "Dispositivo não encontrado" });
   res.json(disp);
 }
