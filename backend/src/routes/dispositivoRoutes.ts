@@ -7,6 +7,8 @@ import {
   updateDispositivo,
   deleteDispositivo,
   listUserDispositivos,
+  getDispositivoByHardwareId,
+  updateDadosDispositivo,
 } from "../controllers/dispositivoController";
 
 const router = Router();
@@ -17,5 +19,7 @@ router.get("/dispositivos/:id", getDispositivoById);
 router.put("/dispositivos/:id", updateDispositivo);
 router.delete("/dispositivos/:id", deleteDispositivo);
 router.get("/user/:id/dispositivos", listUserDispositivos);
+router.get("/hardware/:id", getDispositivoByHardwareId);
+router.put("/hardware/:id", updateDadosDispositivo);
 
 export default router;

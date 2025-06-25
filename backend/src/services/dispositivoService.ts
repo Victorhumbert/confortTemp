@@ -7,6 +7,12 @@ interface DispDTO {
   userId: number;
 }
 
+interface IDadosHardware {
+  umidade: number;
+  temperatura: number;
+  sensor: boolean;
+}
+
 export async function createWithConfig({ nome, local, userId }: DispDTO) {
   const dispositivo = await prisma.dispositivo
     .create({
@@ -81,4 +87,54 @@ export function getByUserId(userId: number) {
     where: { userId, ativo: 1 },
     include: { user: true, config: true, historico: true },
   });
+}
+
+export function getDispositivoByHardwareId(idHardware: number) {
+  const response = prisma.config.findFirst({
+    where: { dispositivosId: idHardware },
+  });
+  return response;
+}
+
+export function updateDadosDispositivo(idHardware: number, dados: IDadosHardware) {
+  console.log("Atualizando dados do dispositivo", idHardware, dados);
+  if (dados.sensor === undefined && !dados.temperatura && !dados.umidade) {
+    throw new Error("Dados são obrigatórios.");
+  }
+
+  const response = prisma.config.update({
+    where: { dispositivosId: idHardware },
+    data: dados,
+  }).then(async (config) => {
+    if (!config) {
+      throw new Error("Configuração não encontrada para o ID de hardware fornecido.");
+    }
+    const historico = await prisma.historico.create({
+      data: {
+        dispositivoId: idHardware,
+      }
+    })
+
+    if (dados.sensor) {
+      await prisma.historico_mov.create({
+        data: {
+          motion: dados.sensor ? 1 : 0,
+        }
+      })
+    }
+    
+    if (dados.temperatura) {
+      await prisma.historico_temp.create({
+        data: {
+          temperatura: dados.temperatura,
+          historicoId: historico.id,
+        }
+      })
+    }
+    return {
+      ...config,
+      historicoId: historico.id,
+    }
+  });
+  return response;
 }
