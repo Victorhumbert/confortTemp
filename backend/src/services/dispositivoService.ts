@@ -119,6 +119,7 @@ export function updateDadosDispositivo(idHardware: number, dados: IDadosHardware
       await prisma.historico_mov.create({
         data: {
           motion: dados.sensor ? 1 : 0,
+          historicoId: historico.id,
         }
       })
     }

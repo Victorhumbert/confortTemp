@@ -49,12 +49,14 @@ export async function listUserDispositivos(req: Request, res: Response) {
 }
 export async function getDispositivoByHardwareId(req: Request, res: Response) {
   const configHardware = await svc.getDispositivoByHardwareId(+req.params.id);
+    console.log("Dados atualizados:", configHardware);
   if (!configHardware) res.status(404).json({ error: "Hardware não encontrado" });
   res.json(configHardware);
 }
 export async function updateDadosDispositivo(req: Request, res: Response) {
   try {
     const updated = await svc.updateDadosDispositivo(+req.params.id, req.body);
+    console.log("Dados atualizados:", updated);
     res.json({ data: updated, message: "Dados atualizados com sucesso!" });
   } catch (err: any) {
     res.status(400).json({ error: err.message });
