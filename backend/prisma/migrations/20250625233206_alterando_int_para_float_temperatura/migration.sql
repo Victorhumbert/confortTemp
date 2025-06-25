@@ -1,0 +1,7 @@
+-- AlterTable
+ALTER TABLE "Config" ALTER COLUMN "temperatura" SET DEFAULT 24,
+ALTER COLUMN "temperatura" SET DATA TYPE DOUBLE PRECISION;
+
+-- AlterTable
+ALTER TABLE "Historico_temp" ALTER COLUMN "temperatura" SET DEFAULT 24,
+ALTER COLUMN "temperatura" SET DATA TYPE DOUBLE PRECISION;

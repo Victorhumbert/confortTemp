@@ -97,7 +97,6 @@ export function getDispositivoByHardwareId(idHardware: number) {
 }
 
 export function updateDadosDispositivo(idHardware: number, dados: IDadosHardware) {
-  console.log("Atualizando dados do dispositivo", idHardware, dados);
   if (dados.sensor === undefined && !dados.temperatura && !dados.umidade) {
     throw new Error("Dados são obrigatórios.");
   }
@@ -106,14 +105,17 @@ export function updateDadosDispositivo(idHardware: number, dados: IDadosHardware
     where: { dispositivosId: idHardware },
     data: dados,
   }).then(async (config) => {
+    console.log("Configuração atualizada:", config);
     if (!config) {
       throw new Error("Configuração não encontrada para o ID de hardware fornecido.");
     }
+    console.log("Dados do dispositivo:", dados);
     const historico = await prisma.historico.create({
       data: {
         dispositivoId: idHardware,
       }
     })
+    console.log("Dados do dispositivo:", historico);
 
     if (dados.sensor) {
       await prisma.historico_mov.create({
@@ -125,6 +127,7 @@ export function updateDadosDispositivo(idHardware: number, dados: IDadosHardware
     }
     
     if (dados.temperatura) {
+      console.log("Temperatura recebida:", dados.temperatura);
       await prisma.historico_temp.create({
         data: {
           temperatura: dados.temperatura,

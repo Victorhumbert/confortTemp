@@ -56,7 +56,7 @@ export async function getDispositivoByHardwareId(req: Request, res: Response) {
 export async function updateDadosDispositivo(req: Request, res: Response) {
   try {
     const updated = await svc.updateDadosDispositivo(+req.params.id, req.body);
-    console.log("Dados atualizados:", updated);
+    console.log("Passou:", updated);
     res.json({ data: updated, message: "Dados atualizados com sucesso!" });
   } catch (err: any) {
     res.status(400).json({ error: err.message });

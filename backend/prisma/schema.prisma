@@ -38,9 +38,9 @@ model Dispositivo {
 
 model Config {
   id              Int          @id @unique @default(autoincrement())
-  temperatura     Float          @default(24)
-  temperaturaMax  Int          @default(30)
-  temperaturaMin  Int          @default(18)
+  temperatura     Float          @default(24.00)
+  temperaturaMax  Float          @default(30.00)
+  temperaturaMin  Float          @default(18.00)
   umidade         Int          @default(50)
   sensor          Boolean      @default(true)
   distanciaSensor Int          @default(15)
@@ -62,7 +62,7 @@ model Historico {
 
 model Historico_temp {
   id          Int        @id @unique @default(autoincrement())
-  temperatura Float        @default(24)
+  temperatura Float        @default(24.00)
   updatedAt   DateTime   @default(now())
   Historico   Historico? @relation(fields: [historicoId], references: [id])
   historicoId Int?
