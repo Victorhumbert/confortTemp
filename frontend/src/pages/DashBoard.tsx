@@ -216,7 +216,7 @@ export const DashBoard = () => {
                   <TableHead className="text-center">Temperatura</TableHead>
                   <TableHead className="text-center">Umidade</TableHead>
                   <TableHead className="text-center">Luzes</TableHead>
-                  <TableHead className="text-center">Status</TableHead>
+                  <TableHead className="text-center">Ar condicionado</TableHead>
                   <TableHead className="text-center">Configurações</TableHead>
                 </TableRow>
               </TableHeader>
@@ -262,7 +262,10 @@ export const DashBoard = () => {
                           <HoverCardTrigger>
                             <div
                               className={`grid mx-auto w-6 h-6 rounded-full ${
-                                dispositivo.config[0].ligado
+                                dispositivo.config[0].temperatura <
+                                  dispositivo.config[0].temperaturaMin ||
+                                dispositivo.config[0].temperatura >
+                                  dispositivo.config[0].temperaturaMax
                                   ? "bg-success"
                                   : "bg-danger"
                               }`}
@@ -270,9 +273,12 @@ export const DashBoard = () => {
                           </HoverCardTrigger>
                           <HoverCardContent className="p-2">
                             <div className="text-center">
-                              {dispositivo.config[0].ligado
-                                ? "Online"
-                                : "Offline"}
+                              {dispositivo.config[0].temperatura <
+                                dispositivo.config[0].temperaturaMin ||
+                              dispositivo.config[0].temperatura >
+                                dispositivo.config[0].temperaturaMax
+                                ? "Ligado"
+                                : "Desligado"}
                             </div>
                           </HoverCardContent>
                         </HoverCard>
